@@ -1,0 +1,105 @@
+<!-- /sections/cart.liquid -->
+
+{% assign hide_quantity = 'quantity--hide' %}
+{%- if section.settings.cart_show_quantity -%}
+	{% assign hide_quantity = '' %}
+{%- endif -%}
+
+{% assign hide_vendor = 'vendor--hide' %}
+{%- if section.settings.cart_vendor_enable -%}
+	{% assign hide_vendor = '' %}
+{%- endif -%}
+
+{% assign hide_notes = 'notes--hide' %}
+{%- if section.settings.cart_notes_enable -%}
+	{% assign hide_notes = '' %}
+{%- endif -%}
+
+{% assign no_ajax = 'no--ajax' %}
+{%- if section.settings.enable_ajax -%}
+	{% assign no_ajax = '' %}
+{%- endif -%}
+
+<div class="cart {{ hide_quantity }} {{ hide_vendor }} {{ hide_notes }} {{ no_ajax }}"  data-section-id="{{ section.id }}" data-section-type="cart" data-ajax-enable="{{ section.settings.enable_ajax }}">
+	{% if cart.item_count == 0 %}
+		{% comment %}
+	    The cart is empty
+	  {% endcomment %}
+	  <div class="wrapper page-margin text-center">
+	    <h3 class="uppercase h3">{{ 'cart.general.title' | t }}</h3>
+	    <p>{{ 'cart.general.empty' | t }}</p>
+	    <a href="{{ section.settings.cart_continue_browsing | default: '/' }}" class="btn btn--large btn--splash uppercase">{{ 'cart.general.continue_browsing_html' | t }}</a>
+	  </div>
+	{% else %}
+		<div class="wrapper page-margin">
+			 <form action="{{ routes.cart_url }}" method="post" novalidate class="cart cartForm">
+			 	<h3>{{ 'cart.general.title' | t }}</h3>
+
+			  <div class="errors" data-form-errors style="display: none;"></div>
+				{% comment %}
+				  The following snippet is refreshed via ajax with
+					cart.ajax.liquid when the quantity is adjusted.
+				{% endcomment %}
+				<div data-cart-form-wrapper>
+					{%- include 'cart-form' -%}
+				</div>
+
+		    {% if additional_checkout_buttons and section.settings.cart_show_additional_buttons %}
+		      <div class="additional-checkout-buttons">
+		        {{ content_for_additional_checkout_buttons }}
+		      </div>
+		    {% endif %}
+		  </form>
+		</div>
+	{% endif %}
+</div>
+
+
+
+{% schema %}
+{
+  "name": "Cart page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_ajax",
+      "label": "Enable auto refresh",
+      "info": "Disable if apps require manual page reload",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "cart_vendor_enable",
+      "label": "Show product vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "cart_notes_enable",
+      "label": "Show cart notes"
+    },
+    {
+      "type": "checkbox",
+      "id": "cart_show_quantity",
+      "label": "Show quantity selectors",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "cart_continue_browsing",
+      "label": "Empty cart link",
+      "info": "Continue browsing link for the empty cart"
+    },
+		{
+			"type": "header",
+			"content": "Additional checkout buttons"
+		},
+		{
+			"type": "checkbox",
+			"id": "cart_show_additional_buttons",
+			"label": "Show additional checkout options on cart",
+			"info": "Move buttons for Apple Pay, Amazon Pay and PayPal express from the first step of the checkout to the cart.",
+			"default": false
+		}
+  ]
+}
+{% endschema %}

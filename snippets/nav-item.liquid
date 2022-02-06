@@ -1,0 +1,84 @@
+{% for block in section.blocks %}
+  {% if block.settings.menu_title == "Christmas" and link.title == "Christmas" %}
+	{% assign mega_image = block.settings.meganav_image %}
+    {% assign mega_link = block.settings.meganav_link %}
+    {% assign mega_title = block.settings.meganav_image_title %}
+    {% assign mega_text = block.settings.meganav_image_text %}
+  {% endif %}
+  {% if block.settings.menu_title == "Furniture" and link.title == "Furniture" %}
+	{% assign mega_image = block.settings.meganav_image %}
+    {% assign mega_link = block.settings.meganav_link %}
+    {% assign mega_title = block.settings.meganav_image_title %}
+    {% assign mega_text = block.settings.meganav_image_text %}
+  {% endif %}
+  {% if block.settings.menu_title == "Lighting" and link.title == "Lighting" %}
+	{% assign mega_image = block.settings.meganav_image %}
+    {% assign mega_link = block.settings.meganav_link %}
+    {% assign mega_title = block.settings.meganav_image_title %}
+    {% assign mega_text = block.settings.meganav_image_text %}
+  {% endif %}
+  {% if block.settings.menu_title == "Home Accessories" and link.title == "Home Accessories" %}
+	{% assign mega_image = block.settings.meganav_image %}
+    {% assign mega_link = block.settings.meganav_link %}
+    {% assign mega_title = block.settings.meganav_image_title %}
+    {% assign mega_text = block.settings.meganav_image_text %}
+  {% endif %}
+  {% if block.settings.menu_title == "Entertaining" and link.title == "Entertaining" %}
+	{% assign mega_image = block.settings.meganav_image %}
+    {% assign mega_link = block.settings.meganav_link %}
+    {% assign mega_title = block.settings.meganav_image_title %}
+    {% assign mega_text = block.settings.meganav_image_text %}
+  {% endif %}
+  {% if block.settings.menu_title == "Outdoor" and link.title == "Outdoor" %}
+	{% assign mega_image = block.settings.meganav_image %}
+    {% assign mega_link = block.settings.meganav_link %}
+    {% assign mega_title = block.settings.meganav_image_title %}
+    {% assign mega_text = block.settings.meganav_image_text %}
+  {% endif %}
+{% endfor %}
+
+{%- assign parent = false -%}
+{%- if link.levels == 1 -%}
+  {%- assign parent = true -%}
+{%- endif -%}
+{%- assign grandparent = false -%}
+{%- if link.levels == 2 -%}
+  {%- assign grandparent = true -%}
+{%- endif -%}
+{%- assign child_count = 0 -%}
+{%- if grandparent -%}
+  {%- assign child_count = link.links.size -%}
+  {%- if child_count > 10 -%}
+    {%- assign child_count = 10 -%}
+  {%- endif -%}
+  {% if mega_image != blank %}
+    {%- assign child_count = child_count | plus: 1 -%}
+    {% assign meganavImage=true %}
+  {%- endif -%}
+{%- endif -%}
+
+<li class="{% if grandparent %}grandparent kids-{{child_count}}{% elsif parent %}parent{% else %}child{%endif%} {% if link.active %}main-menu--active{% endif %}">
+  <a href="{{ link.url }}" class="nav-link"{% if parent or grandparent %} aria-haspopup="true" aria-expanded="false"{% endif %}>{{ link.title | escape }}{{tmp}}</a>
+  {% if parent or grandparent %}
+    <a href="#" class="nav-carat" aria-haspopup="true" aria-expanded="false"><span class="plus">+</span><span class="minus">-</span></a>
+      <div class="main-menu-dropdown {% if grandparent %} pp {% endif %}">
+        <ul>
+        {% if meganavImage %}
+          <li class="meganav_image_wrapper kids-{{child_count}}">
+            <a href="{{ mega_link }}" class="meganav_image">
+              <img src="{{ mega_image | img_url: '500x' }}" alt="{{ mega_image | default: shop.name }}"/>
+              <div class="megatext_container_p">
+                <h1>{{ mega_title }}</h1>
+                <span>{{ mega_text }}</span>
+              </div>
+            </a>
+          </li>
+          {% assign meganavImage=false %}
+        {% endif %}
+        {% for link in link.links %}
+          {% include 'nav-item' %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</li>

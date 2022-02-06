@@ -1,0 +1,404 @@
+<!-- /sections/blog.liquid -->
+{% assign sidebar_enable = false %}
+
+
+{% if sidebar_enable %}
+  {% assign blog_grid = 'large--one-half' %}
+{% else %}
+  {% assign blog_grid = 'large--one-third' %}
+{% endif %}
+
+{% capture link %}{{ shop.url }}{{ blog.url }}{% endcapture %}
+{% capture shareTitle %}{{ blog.title | url_param_escape }}{% endcapture %}
+
+{% assign blog_pagination = 9 %}
+{% paginate blog.articles by blog_pagination %}
+
+{% comment %}
+  This template is also used for listing out articles of a specific tag.
+  You can change layouts or styles by checking if current_tags is true.
+{% endcomment %}
+
+<div data-section-id="{{ section.id }}" data-section-type="parallax">
+  {% if section.settings.image_mobile %}
+    {%- assign img_url = section.settings.image_mobile.src | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+    <div class="homepage-image fade-in-child preventOverflow {{ section.settings.text_color }} {{ section.settings.image_mobile_height }}" id="FeaturedImage-{{ section.id }}"
+      {% if section.settings.parallax %}
+        data-parallax-src="{{ section.settings.image_mobile | img_url: '18x' }}"
+        data-src="{{ img_url }}"
+        data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+        data-aspectratio="{{  section.settings.image_mobile.aspect_ratio }}"
+        data-sizes="auto"
+        style="background-image: url('{{ section.settings.image_mobile | img_url: '1x1' }}');"
+      {% endif %}>
+      <div class="content--centered">
+        <div class="text-center preventOverflowContent">
+          {% comment %}
+          {% if current_tags %}
+            <h1 class="title--flex">{{ current_tags.first }}</h1>
+          {% else %}
+            <h1 class="title--flex">{{ blog.title }}</h1>
+          {% endif %}
+          {% endcomment%}
+          <h1 class = "banner_title title">{{ section.settings.banner_title }} </h1>
+          <div class = "banner-subtitle">{{ section.settings.banner_subtitle }}</div>
+          <a class = "overlay_btn btn">{{ section.settings.overlay_btn}} <i class="fa fa-angle-down" style = "color:white"></i> 
+          <span class="blog_news_tooltip_content"> <span class="blog_news_tooltip_text"> 
+          <span class="blog_news_tooltip_inner">{{ section.settings.banner_tooltip_text }}</span></span></span>
+          </a>
+        </div>
+      </div>
+      <div class="image-overlay image-overlay-{{ section.settings.overlay_opacity }}"></div>
+      <div class="lazy-image" style="padding-top:{{ 1 | divided_by: section.settings.image_mobile.aspect_ratio | times: 100}}%; background-image: url('{{ section.settings.image_mobile | img_url: '1x1' }}');">
+        <img class="lazyload fade-in" {% if section.settings.parallax %} style="opacity: 0;"{% endif %}
+          alt="{{ section.settings.image_mobile.alt | default: blog.title }}"
+          data-src="{{ img_url }}"
+          data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+          data-aspectratio="{{  section.settings.image_mobile.aspect_ratio }}"
+          data-parent-fit="cover"
+          data-sizes="auto"/>
+      </div>
+      <noscript>
+        <img src="{{ section.settings.image_mobile | img_url: '720x' }}" 
+             alt="{{ section.settings.image_mobile | default: blog.title }}" 
+             class="responsive-wide-image"/>
+      </noscript>
+    </div>
+  {% endif %}
+  <div class="collection_page_banner_p">
+    <div class="banner_wrap_p">
+      <div class="banner_leftside_p">
+        <h3 class="banner_title_p">The Collections</h3>
+        <p class="banner_text_p">{{ section.settings.banner_tooltip_text }}</p>
+        {% for article in blog.articles %}
+        	{% if article.title == "The Shades of Sandstone Collection" %}
+        		<a href="{{ article.url }}" class="banner_button_p">View Collection</a>
+        	{% endif %}
+        {% endfor %}
+      </div>
+      <div class="banner_rightside_p" style="background-image: url('{{ section.settings.image_desktop | img_url: 'x2048' }}')">
+      </div>
+    </div>
+  </div>
+  <div class="blog_collection_data_p">
+    <div class="blog_data_breadcrumb_p">
+      {% include 'breadcrumb' %}
+    </div>
+    <div class="blog_data_product_amount_p">
+      <span>{{ blog.articles_count }} Collections Available</span>
+    </div>
+    <div class="blog_data_product_contact">
+      <a href="https://www.thepremiumcollection.co.uk/pages/contact-us">Contact </a> for Bespoke Collections
+    </div>
+  </div>
+  <div class="container filter">
+    <div class="dropdown">
+      <div class="select">
+        <span>FILTER BY</span>
+        <i class="fa fa-sort"></i>
+      </div>
+      <input type="hidden" name="filter">
+      <ul class="dropdown-menu filter">
+        <li id="m_ac">ALL COLLECTIONS</li>
+        <li id="m_cc">COLOURWAY COLLECTIONS</li>
+        <li id="m_vc">VOGUE COLLECTIONS</li>
+      </ul>
+    </div>
+  </div>
+  <div class="blog_view_sort_wrap_p_mobile">
+    <div class="container viewmode">
+      <div class="dropdown">
+        <div class="select">
+          <span>GRID</span>
+          <i class="fa fa-sort"></i>
+        </div>
+        <input type="hidden" name="view">
+        <ul class="dropdown-menu viewmode">
+          <li id="m_grid">GRID</li>
+          <li id="m_list">LIST</li>
+        </ul>
+      </div>
+    </div>
+    <div class="container sortmode">
+      <div class="dropdown">
+        <div class="select">
+          <span>NEW TO OLD</span>
+          <i class="fa fa-sort"></i>
+        </div>
+        <input type="hidden" name="sort">
+        <ul class="dropdown-menu sortmode">
+          <li id="m_nto">NEW TO OLD</li>
+          <li id="m_otn">OLD TO NEW</li>
+          <li id="m_atz">ALPHEBITCAL A-Z</li>
+          <li id="m_zta">ALPHEBITCAL Z-A</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="blog_view_sort_wrap_p">
+    <div class="blog_view_sort_p">
+      <div class="blog_filter_p">
+        <div class="dropdown">
+          <div class="select">
+            <span class="button">FILTER BY</span>
+            <i class="fa fa-sort"></i>
+          </div>
+          <input type="hidden" name="filter">
+          <ul class="dropdown-menu filter button">
+            <li id="m_ac">ALL COLLECTIONS</li>
+            <li id="m_cc">COLOURWAY COLLECTIONS</li>
+            <li id="m_vc">VOGUE COLLECTIONS</li>
+          </ul>
+        </div>
+      </div>
+      <div class="blog_view_p">
+        <div class="dropdown">
+          <div class="select">
+            <span class="button">GRID</span>
+            <i class="fa fa-sort"></i>
+          </div>
+          <input type="hidden" name="view">
+          <ul class="dropdown-menu viewmode button">
+            <li id="m_grid">GRID</li>
+            <li id="m_list">LIST</li>
+          </ul>
+        </div>
+      </div>
+      <div class="blog_sort_p">
+        <div class="dropdown">
+          <div class="select">
+            <span class="button">NEW TO OLD</span>
+            <i class="fa fa-sort"></i>
+          </div>
+          <input type="hidden" name="sort">
+          <ul class="dropdown-menu sortmode button">
+            <li id="m_nto">NEW TO OLD</li>
+            <li id="m_otn">OLD TO NEW</li>
+            <li id="m_atz">ALPHEBITCAL A-Z</li>
+            <li id="m_zta">ALPHEBITCAL Z-A</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="blog">
+    <div class="wrapper page-margin">
+      <div class="grid">
+        {%- assign blog_layout = 'one whole' -%}
+        {%- if sidebar_enable -%}
+          {%- assign blog_layout = 'large--two-thirds' -%}
+        {% elsif section.settings.layout == 'list' %}
+          {%- assign blog_layout = 'large--two-thirds push--large--one-sixth' -%}
+        {%- endif -%}
+        <div class="grid__item {{ blog_layout }}">
+          {% if current_tags %}
+            <h4 class="title uppercase h4">{{ current_tags.first }}</h4>
+            <hr class="hr--small">
+          {% endif %}
+          <div class="blog_article_list_view">
+            <div class="list_uniform">
+            {% assign blog_pagination = 2 %}
+            {% for article in blog.articles %}
+            	{% assign filter_tag = "" %}
+             	 	{% for tag in article.tags %}
+             	 		{% if tag == "Vogue Collection" %}
+            	  			{% assign filter_tag = "VC" %}
+            			  {% elsif tag == "Colourway Collection" %}
+            		  	{% assign filter_tag = "CC" %}
+            		  {% endif %}
+              		{% endfor %}
+              <div class="blog__article {{ filter_tag }}">
+                <div class="blog__article_mobile">
+                  <a href="{{ article.url}}">
+                    <img src="{{ article.image.src | img_url: '1024x1024' }}"
+                         alt="article image">
+                  </a>
+                </div>
+                <div class="blog__article_left">
+                  <div class="blog_article_data">
+                    <div class="blog_article_blog_date">
+                      {% for tag in article.tags %}
+                        {% assign tagname = ""%}
+                        {% if tag == "Colourway Collection" %}
+                        {% assign tagname="Colourway Collection" %}
+                        {% elsif tag == "Vogue Collection" %}
+                        {% assign tagname="Vogue Collection" %}
+                        {% endif %}
+                       {% endfor %}
+                      <span class="blog_article_collection button"> {{ tagname }} |</span> <span class="blog_article_date button"> {{ article.published_at | date: "%B 20%y" }} </span>
+                    </div>
+                    <div class="blog_article_title_container">
+                      <h5>{{ article.title }}</h5>
+                    </div>
+                    <span class="date_bar">| </span><span class="blog_article_date_mobile"> {{ article.published_at | date: "%B 20%y" }} </span><span class="date_bar"> |</span>
+                    <span class="blog_article_collection_mobile button"> {{ tagname }} </span>
+       				<div class="blog_article_content">{{ article.excerpt }}</div>
+                    <p class="blog_article_item_amount button"> {{ article.metafields.amount.item_amount }} ITEMS </p>
+                    <div class="blog_article_scial">
+                      <a class="article_social_toggle"><img src="{{ 'icon_dark.png' | asset_url  }}" alt="share icon"></i></a>
+                      <div class="article_social_content">
+                        <a href="//www.facebook.com/sharer.php?u={{ link }}"><i class="fa fa-facebook-f fa-2x"></i></a>
+                        <a href="http://pinterest.com/pin/create/button/?url={{ link }}&amp;media={{ article.image | img_url: '1024x1024' | prepend: 'http:' }}&amp;description={{ shareTitle }}"><i class="fa fa-pinterest fa-2x"></i></a>
+                        <a class="linkedin_link" href="https://www.linkedin.com/sharing/share-offsite/?url={{ link }}"><i class="fa fa-linkedin fa-2x"></i></a>
+                        <a class="twitter_link" href="//twitter.com/share?url={{ link }}&amp;text={{ shareTitle }}"><i class="fa fa-twitter fa-2x"></i></a>
+                        <a class="email_link" href="mailto:info@example.com?&subject='I want to share this article'&body={{ link }}" ><img alt="social mail icon" class="mail" src="{{ 'mail.png' | asset_url  }}"></a>
+                      </div>
+                    </div>
+     			  </div>
+                </div>
+                <div class="blog__article_right">
+                  <a class="blog__link" href="{{ article.url }}" aria-label="{{ article.title }}">
+                  	<img src="{{ article.image.src | img_url: '1024x1024' }}" alt="article image">
+                  </a>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+            {% if paginate.pages > 1 %}
+            <div class="text-center">
+              {% include 'pagination-custom' %}
+            </div>
+         	 {% endif %}
+          </div>
+          <div class="blog_article_grid_view">
+            {% unless section.settings.image_mobile or current_tags %}
+              <h4 class="title uppercase h4">{{ blog.title }}</h4>
+              <hr class="hr--small">
+            {% endunless %}
+            <div class="grid-uniform">
+              {% for article in blog.articles %}
+              {% assign filter_tag = "" %}
+              	{% for tag in article.tags %}
+              		{% if tag == "Vogue Collection" %}
+              			{% assign filter_tag = "VC" %}
+              {% elsif tag == "Colourway Collection" %}
+              	{% assign filter_tag = "CC" %}
+              {% endif %}
+              	{% endfor %}
+                {% include 'article-grid-item' , filter_tag: filter_tag, link: link, shareTitle: shareTitle  %}
+              {% endfor %}
+            </div>
+            {% if paginate.pages > 1 %}
+            <div class="text-center">
+              {% include 'pagination-custom' %}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endpaginate %}
+
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Feature image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Banner image for desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Banner image for mobile"
+    },
+    {
+      "type":    "range",
+      "id":      "overlay_opacity",
+      "min":     0,
+      "max":     100,
+      "step":    5,
+      "label":   "Image overlay opacity",
+      "info":    "Increase contrast for legible text.",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "default": "homepage--white",
+      "label": "Text color",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    },
+	{
+	  "type": "text",
+	  "id": "banner_title",
+	  "label": "Title"
+	},
+    {
+       "type": "richtext",
+       "id": "banner_subtitle",
+       "label": "Subtitle"
+    },
+	{
+	  "type": "text",
+	  "id": "overlay_btn",
+	  "label": "Read More"
+	},
+	{
+      "type": "url",
+      "id": "overlay_btn_link",
+      "label": "Read More link"
+    },
+    {
+       "type": "textarea",
+       "id": "banner_tooltip_text",
+       "label": "Tooltip Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "parallax",
+      "default": true,
+      "label": "Enable parallax scroll"
+    },
+    {
+      "type": "checkbox",
+      "id": "tags",
+      "default": false,
+      "label": "Show tags"
+    },
+	{
+      "type": "url",
+      "id": "facebook_link",
+      "label": "Facebook link"
+    },
+	{
+      "type": "url",
+      "id": "instagram_link",
+      "label": "Instagram link"
+    },
+	{
+      "type": "url",
+      "id": "pinterest_link",
+      "label": "Pinterest link"
+    },
+	{
+      "type": "url",
+      "id": "linkedin_link",
+      "label": "LinkedIn link"
+    },
+	{
+      "type": "url",
+      "id": "twitter_link",
+      "label": "Twitter link"
+    },
+	{
+      "type": "url",
+      "id": "email_link",
+      "label": "Email link"
+    }
+  ]
+}
+{% endschema %}

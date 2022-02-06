@@ -1,0 +1,106 @@
+<div class="mobile-wrapper">
+  {% if shop.customer_accounts_enabled and section.settings.header_enable_account %}
+  <div class="header-account-link">
+    <a href="{{ routes.account_url }}">
+      <img src="{{ 'account.svg' | asset_url }}" alt="{{ 'customer.account.title' | t }}">
+    </a>
+  </div>
+  {% endif %}
+  
+  <div class="header-cart__wrapper">
+    <a href="{{ routes.cart_url }}" class="CartToggle header-cart">
+      <img src="{{ 'bag.svg' | asset_url }}">
+      <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
+    </a>
+    <span class="header-cart__bubble cartCount{% if cart.item_count < 1 %} hidden-count{% endif %}"></span>
+  </div>
+  
+  <div class="logo-wrapper{% if section.settings.logo %} logo-wrapper--image{% endif %}">
+    {% if template.name == 'index' %}
+      <h1 class="h4 header-logo">
+    {% else %}
+      <div class="h4 header-logo">
+    {% endif %}
+        <a href="{{ routes.root_url }}">
+          {% comment %}
+          {% if section.settings.logo != blank %}
+            {% capture image_size %}{{ section.settings.logo_max_limit }}x{% endcapture %}
+            <img src="{{ section.settings.logo | img_url: image_size }}"
+                 class="logo--color"
+                 srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+                 alt="{{ section.settings.logo.alt | default: shop.name }}">
+          {% else %}
+            <span class="logo--text">{{ shop.name }}</span>
+          {% endif %}
+          {% if transparent_header and section.settings.transparent_logo != blank %}
+            {% capture image_size %}{{ section.settings.logo_max_limit }}x{% endcapture %}
+            <img src="{{ section.settings.transparent_logo | img_url: image_size }}"
+                 class="logo--transparent"
+                 srcset="{{ section.settings.transparent_logo | img_url: image_size }} 1x, {{ section.settings.transparent_logo | img_url: image_size, scale: 2 }} 2x"
+                 alt="{{ section.settings.transparent_logo.alt | default: shop.name }}">
+          {% endif %}
+          {% endcomment %}
+          {% if template.name == 'index' %}
+          	{% if section.settings.home_logo == 'white' %}
+    		   	<img class="logo--svg" alt="{{ shop.name }}"src="{{ 'white_logo.svg' | asset_url }}">
+	        {% else %}
+          		<img class="logo--svg" alt="{{ shop.name }}"src="{{ 'black_logo.svg' | asset_url }}">
+          	{% endif %}
+          {% else %}
+          	<img class="logo--svg" alt="{{ shop.name }}"src="{{ 'white_logo.svg' | asset_url }}">
+          {% endif %}
+        </a>
+      {% if template.name == 'index' %}
+      </h1>
+    {% else %}
+      </div>
+    {% endif %}
+  </div>
+  {% if section.settings.header_enable_search %}
+  <div class="header-search__wrapper">
+    <div class="header-search">
+      
+    <div class="temp_p">
+    </div>
+      <form action="{{ routes.search_url }}" method="get" class="input-group search" role="search">
+        {% if section.settings.search_only_products %}<input type="hidden" name="type" value="product">{% endif %}
+        <input class="search-bar" type="search" name="q" title="{{ 'general.search.submit' | t }}">
+        <button type="submit" class="btn search-btn" aria-label="{{ 'general.search.submit' | t }}"></button>
+      </form>
+    </div>
+  </div>
+  <div class="header-cart__wrapper_p">
+    <a href="{{ routes.cart_url }}" class="CartToggle header-cart_p">
+      <img src="{{ 'bag.svg' | asset_url }}">
+      <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
+      <span class="header-cart__bubble_p cartCount{% if cart.item_count < 1 %} hidden-count{% endif %}">{{cart.item_count}}</span>
+    </a>
+    
+  </div>
+  {% endif %}
+  
+  <a href class="menuToggle header-hamburger" aria-label="{{ 'general.accessibility.menu' | t }}" {% if nav-contents == 'mobile' %} aria-haspopup="true" aria-expanded="false" aria-controls="ariaHamburger"{% endif %}>
+    <img src="{{ 'hamburger.svg' | asset_url }}" alt="Hamburger Menu">
+  </a>
+  
+</div>
+<nav class="header-menu nav-wrapper">
+  <ul class="main-menu accessibleNav" aria-label="primary"{% if nav-contents == 'mobile' %} id="ariaHamburger" {% endif %}>
+    {% if section.settings.main_menu_linklist %}
+      {% assign main_menu_linklist = section.settings.main_menu_linklist %}
+    {% else %}
+      {% assign main_menu_linklist = 'main-menu' %}
+    {% endif %}
+    {% for link in linklists[main_menu_linklist].links %}
+      {% include 'nav-item' %}
+    {% endfor %}
+    {% comment %}
+    <li class="cart-text-link">
+      <a href="{{ routes.cart_url }}" class="CartToggle">
+        {{ 'layout.cart.title' | t }}
+        <span class="cartCost {% if cart.item_count < 1 %} hidden-count {% endif %}">(<span class="money">{{ cart.total_price | money }}</span>)</span>
+      </a>
+    </li>
+    {% endcomment %}
+  </ul>
+</nav>

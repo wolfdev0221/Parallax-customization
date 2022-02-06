@@ -1,0 +1,524 @@
+<!-- /sections/index-blog.liquid -->
+{%- assign article = articles[section.settings.blogpost] -%}
+{%- assign article1 = articles[section.settings.blogpost1] -%}
+{%- assign article2 = articles[section.settings.blogpost2] -%}
+{%- assign post_count = section.settings.homepage_blog_count -%}
+
+{% case post_count %}
+{% when 0 %}
+{% when 1 %}
+{% assign blog_grid = 'large--one-half push--large--one-quarter' %}
+{% when 2 %}
+{% assign blog_grid = 'large--one-half' %}
+{% when 3 %}
+{% assign blog_grid = 'large--one-third' %}
+{% endcase %}
+
+<style>
+  .section-{{ section.id }} .blog__article--card{
+    min-height: {{ section.settings.height | append: 'px' }};
+  }
+</style>
+<div class="homepage-blog {{ section.settings.homepage_blog_color }} section-{{ section.id }}">
+  <div class="wrapper">
+    {% unless section.settings.title == '' %}
+    <h3>{{ section.settings.title | escape }}</h3>
+    <div class="home__description">
+      {{ section.settings.blog_description }}
+    </div>			
+    {% endunless %}
+    <div class="grid-uniform">
+      {% for tag in article.tags %}
+      {% assign tagname = ""%}
+      {% if tag == "Colourway Collection" %}
+      {% assign tagname="Colourway" %}
+      {% elsif tag == "Vogue Collection" %}
+      {% assign tagname="Vogue" %}
+      {% endif %}
+      {% endfor %}
+      <div class="grid__item {{ blog_grid }} {{ filter_tag }}">
+        <a class="blog__link" aria-label="{{ article.title }}">
+          <div class="blog__article blog__article--card{% if article.image %} blog__article--image{% endif %}">
+            <div class="blog_article_overlay"></div>
+            <div class="blog_article_image_wrap">
+              <div class="blog_article_image_container" style="background-image: url('{{ section.settings.main_blog1 | img_url: 'master' }}'); height: {{section.settings.height}}px"></div>
+            </div>
+            <div class="blog_article_title_container_wrap_p_desktop">
+              <div class="blog_article_title_container_desktop">
+                <h5>{{ article.title }}</h5>
+              </div>
+            </div>
+            <div class="blog_article_title_container_wrap_p_mobile">
+              <div class="blog_article_title_container_mobile">
+                <h5>{{ article.title }}</h5>
+              </div>
+            </div>
+            <div class="blog-tagname">
+              <div class="bt-content button">
+                {{ section.settings.type_blog1 }} <span class="bt-bar"> | </span> {{ section.settings.date_blog1 }}
+              </div>
+            </div>
+            <div class="blog_article_data">
+              <div class="blog_article_blog_date">
+                <span class="date_bar">| </span><span class="blog_article_date_mobile"> {{ article.published_at | date: "%B 20%y" }} </span><span class="date_bar"> |</span>
+                <span class="blog_article_collection"> {{ tagname }} </span> <span class="date_bar_desk"> | </span>
+                <span class="blog_article_date"> {{ article.published_at | date: "%B 20%y" }} </span>
+              </div>
+              <div class="blog_article_content">{{ article.excerpt }}</div>
+            </div>
+            <p class="blog_article_item_amount"> {{ article.metafields.amount.item_amount }} ITEMS </p>
+            <div class="blog_article_scial">
+              <a class="article_social_toggle"><img class="pin" src="{{ 'icon_dark.png' | asset_url  }}" alt="share icon"></a>
+              <div class="article_social_content">
+                <a href="//www.facebook.com/sharer.php?u={{ link }}"><i class="fa fa-facebook-f fa-2x"></i></a>
+                <a href="http://pinterest.com/pin/create/button/?url={{ link }}&amp;media={{ article.image | img_url: '1024x1024' | prepend: 'http:' }}&amp;description={{ shareTitle }}"><i class="fa fa-pinterest fa-2x"></i></a>
+                <a class="linkedin_link" href="https://www.linkedin.com/sharing/share-offsite/?url={{ link }}"><i class="fa fa-linkedin fa-2x"></i></a>
+                <a class="twitter_link" href="//twitter.com/share?url={{ link }}&amp;text={{ shareTitle }}"><i class="fa fa-twitter fa-2x"></i></a>
+                <a class="email_link" href="mailto:info@example.com?&subject='I want to share this article'&body={{ link }}" ><img alt="social mail icon" class="mail" src="{{ 'mail.png' | asset_url  }}"></a>
+              </div>
+            </div>
+            <div class="plus_icon_container">
+              <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z"/></svg>
+            </div>
+          </div>
+        </a>
+        <a class="blog__link" href="{{ article.url }}" aria-label="{{ article.title }}">
+          <div class="behind_animation_p">
+
+            <p>Preview</p>
+            <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image1_blog1 | img_url: 'master' }}')"></div>
+            <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image2_blog1 | img_url: 'master' }}')"></div>
+            <p class="behind_desc_p">{{ section.settings.text_blog1 }}</p>
+            <h3>{{ section.settings.title_blog1 }}</h3>
+            <span>Explore the look</span>
+
+          </div>
+        </a>
+      </div>
+
+      {% for tag in article1.tags %}
+      {% assign tagname = ""%}
+      {% if tag == "Colourway Collection" %}
+      {% assign tagname="Colourway" %}
+      {% elsif tag == "Vogue Collection" %}
+      {% assign tagname="Vogue" %}
+      {% endif %}
+      {% endfor %}
+      <div class="grid__item {{ blog_grid }} {{ filter_tag }}">
+        <a class="blog__link" aria-label="{{ article1.title }}">
+          <div class="blog__article blog__article--card{% if article1.image %} blog__article--image{% endif %}">
+            <div class="blog_article_overlay"></div>
+            <div class="blog_article_image_wrap">
+              <div class="blog_article_image_container" style="background-image: url('{{ section.settings.main_blog2 | img_url: 'master' }}'); height: {{section.settings.height}}px"></div>
+            </div>
+            <div class="blog_article_title_container_wrap_p_desktop">
+              <div class="blog_article_title_container_desktop">
+                <h5>{{ article1.title }}</h5>
+              </div>
+            </div>
+            <div class="blog_article_title_container_wrap_p_mobile">
+              <div class="blog_article_title_container_mobile">
+                <h5>{{ article1.title }}</h5>
+              </div>
+            </div>
+            <div class="blog-tagname">
+              <div class="bt-content button">
+                {{ section.settings.type_blog2 }} <span class="bt-bar"> | </span> {{ section.settings.date_blog2 }}
+              </div>
+            </div>
+            <div class="blog_article_data">
+              <div class="blog_article_blog_date">
+                <span class="date_bar">| </span><span class="blog_article_date_mobile"> {{ article1.published_at | date: "%B 20%y" }} </span><span class="date_bar"> |</span>
+                <span class="blog_article_collection"> {{ tagname }} </span> <span class="date_bar_desk"> | </span>
+                <span class="blog_article_date"> {{ article1.published_at | date: "%B 20%y" }} </span>
+              </div>
+              <div class="blog_article_content">{{ article1.excerpt }}</div>
+            </div>
+            <p class="blog_article_item_amount"> {{ article1.metafields.amount.item_amount }} ITEMS </p>
+            <div class="blog_article_scial">
+              <a class="article_social_toggle"><img class="pin" src="{{ 'icon_dark.png' | asset_url  }}" alt="share icon"></a>
+              <div class="article_social_content">
+                <a href="//www.facebook.com/sharer.php?u={{ link }}"><i class="fa fa-facebook-f fa-2x"></i></a>
+                <a href="http://pinterest.com/pin/create/button/?url={{ link }}&amp;media={{ article1.image | img_url: '1024x1024' | prepend: 'http:' }}&amp;description={{ shareTitle }}"><i class="fa fa-pinterest fa-2x"></i></a>
+                <a class="linkedin_link" href="https://www.linkedin.com/sharing/share-offsite/?url={{ link }}"><i class="fa fa-linkedin fa-2x"></i></a>
+                <a class="twitter_link" href="//twitter.com/share?url={{ link }}&amp;text={{ shareTitle }}"><i class="fa fa-twitter fa-2x"></i></a>
+                <a class="email_link" href="mailto:info@example.com?&subject='I want to share this article'&body={{ link }}" ><img alt="social mail icon" class="mail" src="{{ 'mail.png' | asset_url  }}"></a>
+              </div>
+            </div>
+            <div class="plus_icon_container">
+              <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z"/></svg>
+            </div>
+          </div>
+        </a>
+        <a class="blog__link" href="{{ article1.url }}" aria-label="{{ article1.title }}">
+          <div class="behind_animation_p">
+
+            <p>Preview</p>
+            <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image1_blog2 | img_url: 'master' }}')"></div>
+            <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image2_blog2 | img_url: 'master' }}')"></div>
+            <p class="behind_desc_p">{{ section.settings.text_blog2 }}</p>
+            <h3>{{ section.settings.title_blog2 }}</h3>
+            <span>Explore the look</span>
+
+          </div>
+        </a>
+      </div>
+
+
+      {% for tag in article2.tags %}
+      {% assign tagname = ""%}
+      {% if tag == "Colourway Collection" %}
+      {% assign tagname="Colourway" %}
+      {% elsif tag == "Vogue Collection" %}
+      {% assign tagname="Vogue" %}
+      {% endif %}
+      {% endfor %}
+      <div class="grid__item {{ blog_grid }} {{ filter_tag }}">
+        <a class="blog__link" aria-label="{{ article2.title }}">
+          <div class="blog__article blog__article--card{% if article2.image %} blog__article--image{% endif %}">
+            <div class="blog_article_overlay"></div>
+            <div class="blog_article_image_wrap">
+              <div class="blog_article_image_container" style="background-image: url('{{ section.settings.main_blog3 | img_url: 'master' }}'); height: {{section.settings.height}}px"></div>
+            </div>
+            <div class="blog_article_title_container_wrap_p_desktop">
+              <div class="blog_article_title_container_desktop">
+                <h5>{{ article2.title }}</h5>
+              </div>
+            </div>
+            <div class="blog_article_title_container_wrap_p_mobile">
+              <div class="blog_article_title_container_mobile">
+                <h5>{{ article2.title }}</h5>
+              </div>
+            </div>
+            <div class="blog-tagname">
+              <div class="bt-content button">
+                {{ section.settings.type_blog3 }} <span class="bt-bar"> | </span> {{ section.settings.date_blog3 }}
+              </div>
+            </div>
+            <div class="blog_article_data">
+              <div class="blog_article_blog_date">
+                <span class="date_bar">| </span><span class="blog_article_date_mobile"> {{ article2.published_at | date: "%B 20%y" }} </span><span class="date_bar"> |</span>
+                <span class="blog_article_collection"> {{ tagname }} </span> <span class="date_bar_desk"> | </span>
+                <span class="blog_article_date"> {{ article2.published_at | date: "%B 20%y" }} </span>
+              </div>
+              <div class="blog_article_content">{{ article2.excerpt }}</div>
+            </div>
+            <p class="blog_article_item_amount"> {{ article2.metafields.amount.item_amount }} ITEMS </p>
+            <div class="blog_article_scial">
+              <a class="article_social_toggle"><img class="pin" src="{{ 'icon_dark.png' | asset_url  }}" alt="share icon"></a>
+              <div class="article_social_content">
+                <a href="//www.facebook.com/sharer.php?u={{ link }}"><i class="fa fa-facebook-f fa-2x"></i></a>
+                <a href="http://pinterest.com/pin/create/button/?url={{ link }}&amp;media={{ article.image | img_url: '1024x1024' | prepend: 'http:' }}&amp;description={{ shareTitle }}"><i class="fa fa-pinterest fa-2x"></i></a>
+                <a class="linkedin_link" href="https://www.linkedin.com/sharing/share-offsite/?url={{ link }}"><i class="fa fa-linkedin fa-2x"></i></a>
+                <a class="twitter_link" href="//twitter.com/share?url={{ link }}&amp;text={{ shareTitle }}"><i class="fa fa-twitter fa-2x"></i></a>
+                <a class="email_link" href="mailto:info@example.com?&subject='I want to share this article'&body={{ link }}" ><img alt="social mail icon" class="mail" src="{{ 'mail.png' | asset_url  }}"></a>
+              </div>
+            </div>
+            <div class="plus_icon_container">
+              <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z"/></svg>
+            </div>
+          </div>
+        </a>
+        <a class="blog__link" href="{{ article2.url }}" aria-label="{{ article1.title }}">
+          <div class="behind_animation_p">
+
+            <p>Preview</p>
+            <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image1_blog3 | img_url: 'master' }}')"></div>
+            <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image2_blog3 | img_url: 'master' }}')"></div>
+            <p class="behind_desc_p">{{ section.settings.text_blog3 }}</p>
+            <h3>{{ section.settings.title_blog3 }}</h3>
+            <span>Explore the look</span>
+
+          </div>
+        </a>
+      </div>     
+
+
+      <div class="mobile-section mobile-feature-slider">
+        <div class="slider-e single-item">
+
+          <div class="blog__article_p blog__article--card blog__article--image">
+            
+              <div class="blog__article blog__article--card{% if article.image %} blog__article--image{% endif %}">
+                <div class="blog_article_overlay"></div>
+                <div class="blog_article_image_wrap">
+                  <div class="blog_article_image_container" style="background-image: url('{{ section.settings.main_blog1 | img_url: 'master' }}');"></div>
+                </div>
+                <div class="blog_article_title_container_wrap_p_desktop">
+                  <div class="blog_article_title_container_desktop">
+                    <div class="blog-tagname">
+                      <div class="bt-content button">
+                        {{ section.settings.type_blog1 }} <span class="bt-bar"> | </span> {{ section.settings.date_blog1 }}
+                      </div>
+                    </div>
+                    <h5>{{ article.title }}</h5>
+                  </div>
+                </div>
+                <div class="plus_icon_container">
+                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z"/></svg>
+                </div>
+              </div>
+              <div class="behind_animation_p">
+                <a class="blog__link" href="{{ article.url }}" aria-label="{{ article.title }}">
+                  <p>Preview</p>
+                  <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image1_blog1 | img_url: 'master' }}')"></div>
+                  <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image2_blog1 | img_url: 'master' }}')"></div>
+                  <p class="behind_desc_p">{{ section.settings.text_blog3 }}</p>
+                  <h3>{{ section.settings.title_blog3 }}</h3>
+                  <span>Explore the look</span>
+                </a>
+              </div>
+          </div>
+
+          <div class="blog__article_p blog__article--card blog__article--image">
+            
+              <div class="blog__article blog__article--card{% if article1.image %} blog__article--image{% endif %}">
+                <div class="blog_article_overlay"></div>
+                <div class="blog_article_image_wrap">
+                  <div class="blog_article_image_container" style="background-image: url('{{ section.settings.main_blog2 | img_url: 'master' }}');"></div>
+                </div>
+                <div class="blog_article_title_container_wrap_p_desktop">
+                  <div class="blog_article_title_container_desktop">
+                    <div class="blog-tagname">
+                      <div class="bt-content button">
+                        {{ section.settings.type_blog2 }} <span class="bt-bar"> | </span> {{ section.settings.date_blog2 }}
+                      </div>
+                    </div>
+                    <h5>{{ article1.title }}</h5>
+                  </div>
+                </div>
+                <div class="plus_icon_container">
+                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z"/></svg>
+                </div>
+              </div>
+              <div class="behind_animation_p">
+                <a class="blog__link" href="{{ article1.url }}" aria-label="{{ article1.title }}">
+                  <p>Preview</p>
+                  <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image1_blog2 | img_url: 'master' }}')"></div>
+                  <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image2_blog2 | img_url: 'master' }}')"></div>
+                  <p class="behind_desc_p">{{ section.settings.text_blog3 }}</p>
+                  <h3>{{ section.settings.title_blog3 }}</h3>
+                  <span>Explore the look</span>
+                </a>
+              </div>
+            
+          </div>
+
+          <div class="blog__article_p blog__article--card blog__article--image">
+           
+              <div class="blog__article blog__article--card{% if article2.image %} blog__article--image{% endif %}">
+                <div class="blog_article_overlay"></div>
+                <div class="blog_article_image_wrap">
+                  <div class="blog_article_image_container" style="background-image: url('{{ section.settings.main_blog3 | img_url: 'master' }}');"></div>
+                </div>
+                <div class="blog_article_title_container_wrap_p_desktop">
+                  <div class="blog_article_title_container_desktop">
+                    <div class="blog-tagname">
+                      <div class="bt-content button">
+                        {{ section.settings.type_blog3 }} <span class="bt-bar"> | </span> {{ section.settings.date_blog3 }}
+                      </div>
+                    </div>
+                    <h5>{{ article2.title }}</h5>
+                  </div>
+                </div>
+                <div class="plus_icon_container">
+                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z"/></svg>
+                </div>
+              </div>
+              <div class="behind_animation_p">
+                <a class="blog__link" href="{{ article2.url }}" aria-label="{{ article2.title }}">
+                  <p>Preview</p>
+                  <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image1_blog3 | img_url: 'master' }}')"></div>
+                  <div class="behind_image_container_p" style="background-image: url('{{ section.settings.image2_blog3 | img_url: 'master' }}')"></div>
+                  <p class="behind_desc_p">{{ section.settings.text_blog3 }}</p>
+                  <h3>{{ section.settings.title_blog3 }}</h3>
+                  <span>Explore the look</span>
+                </a>
+              </div>
+            
+          </div>
+
+        </div>
+        <div class="dot-hold"></div>
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <span class="slider__label sr-only"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Blog posts",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "News"
+    },
+	{
+      "type": "article",
+      "id": "blogpost",
+      "label": "Blog1"
+    },
+	{
+	  "type": "image_picker",
+	  "id": "main_blog1",
+	  "label": "Main image for Blog1"
+	},
+	{
+	  "type": "text",
+	  "id": "type_blog1",
+	  "label": "Collection type for Blog1"
+	},
+	{
+	  "type": "text",
+	  "id": "date_blog1",
+	  "label": "Collection date for Blog1"
+	},
+	{
+	  "type": "image_picker",
+	  "id": "image1_blog1",
+	  "label": "First image for Blog1"
+	},
+	{
+	  "type": "image_picker",
+	  "id": "image2_blog1",
+	  "label": "Second image for Blog1"
+	},
+	{
+	  "type": "textarea",
+	  "id": "text_blog1",
+	  "label": "Description for Blog1"
+	},
+	{
+	  "type": "text",
+	  "id": "title_blog1",
+	  "label": "Title for Blog1"
+	},
+	{
+      "type": "article",
+      "id": "blogpost1",
+      "label": "Blog2"
+    },
+	{
+	  "type": "image_picker",
+	  "id": "main_blog2",
+	  "label": "Main image for Blog2"
+	},
+	{
+	  "type": "text",
+	  "id": "type_blog2",
+	  "label": "Collection type for Blog2"
+	},
+	{
+	  "type": "text",
+	  "id": "date_blog2",
+	  "label": "Collection date for Blog2"
+	},
+	{
+	  "type": "image_picker",
+	  "id": "image1_blog2",
+	  "label": "First image for Blog2"
+	},
+	{
+	  "type": "image_picker",
+	  "id": "image2_blog2",
+	  "label": "Second image for Blog2"
+	},
+	{
+	  "type": "textarea",
+	  "id": "text_blog2",
+	  "label": "Description for Blog2"
+	},
+	{
+	  "type": "text",
+	  "id": "title_blog2",
+	  "label": "Title for Blog2"
+	},
+	{
+      "type": "article",
+      "id": "blogpost2",
+      "label": "Blog3"
+    },
+	{
+	  "type": "image_picker",
+	  "id": "main_blog3",
+	  "label": "Main image for Blog3"
+	},
+	{
+	  "type": "text",
+	  "id": "type_blog3",
+	  "label": "Collection type for Blog3"
+	},
+	{
+	  "type": "text",
+	  "id": "date_blog3",
+	  "label": "Collection date for Blog3"
+	},
+	{
+	  "type": "image_picker",
+	  "id": "image1_blog3",
+	  "label": "First image for Blog3"
+	},
+	{
+	  "type": "image_picker",
+	  "id": "image2_blog3",
+	  "label": "Second image for Blog3"
+	},
+	{
+	  "type": "textarea",
+	  "id": "text_blog3",
+	  "label": "Description for Blog3"
+	},
+	{
+	  "type": "text",
+	  "id": "title_blog3",
+	  "label": "Title for Blog3"
+	},
+	{
+      "type": "textarea",
+      "id": "blog_description",
+      "label": "Description",
+	  "default": "Morbi vel condimentum nibh, sit amet rhoncus justo. In luctus dui non ante lobortis elementum. Vivamus quis ornare dolor. Vestibulum commodo, turpis finibus posuere vehicula."
+    },
+    {
+      "type":    "range",
+      "id":      "homepage_blog_count",
+      "min":     1,
+      "max":     3,
+      "step":    1,
+      "label":   "Number of posts to display",
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "homepage_blog_color",
+      "label": "Background color",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    },
+    {
+      "type":    "range",
+      "id":      "height",
+      "label":   "Height",
+      "unit":    "px",
+      "min":     250,
+      "max":     600,
+      "step":    10,
+      "default": 300
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}

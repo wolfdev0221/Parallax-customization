@@ -1,0 +1,205 @@
+{%- assign grid_item_width = 'large--one-half' -%}
+
+{% case section.settings.grid %}
+  {% when 1 %}
+    {%- assign grid_item_width = 'large--one-half collection-grid--single' -%}
+  {% when 2 %}
+    {%- assign grid_item_width = 'large--one-half' -%}
+  {% when 3 %}
+    {%- assign grid_item_width = 'large--one-third' -%}
+  {% when 4 %}
+    {%- assign grid_item_width = 'large--one-quarter' -%}
+{% endcase %}
+
+{%- assign grid_width_small = 'small--one-half' -%}
+{%- assign grid_width_medium = 'medium--one-half' -%}
+{%- assign grid_width_large = 'large--one-third' -%}
+
+{% assign pro1 = collection.metafields.spot.pro1 %}
+{% assign pro2 = collection.metafields.spot.pro2 %}
+{% assign img_object = collection.image %}
+
+{%- paginate collection.products by 30 -%}
+
+{% assign plus_link = section.settings.christmas_link %}
+{% if collection.title == "Furniture" %}
+{% assign plus_link = section.settings.furniture_link %}
+{% elsif collection.title == "Lighting" %}
+{% assign plus_link = section.settings.lighting_link %}
+{% elsif collection.title == "Home Accessories" %}
+{% assign plus_link = section.settings.home_link %}
+{% elsif collection.title == "Entertaining" %}
+{% assign plus_link = section.settings.entertain_link %}
+{% elsif collection.title == "Outdoor" %}
+{% assign plus_link = section.settings.outdoor_link %}
+{% endif %}
+
+<style>
+   .section-{{ section.id }} .collection-grid-item{
+    min-height: {{ section.settings.height | append: 'px' }};
+  }
+</style>
+
+{% include 'collection-banner' %}
+
+<div class="homepage-collection-grid {{ section.settings.homepage_collection_grid_color }} section-{{ section.id }}">
+  <div class="wrapper">
+    <div class="lvl1_action_bar_p">
+       <div class="text-left sidebar--hidden" data-sidebar-toggle>
+        <button id="toggleFilters" class="left btn btn--clear uppercase toggle-filters">
+          {% include 'icon-filter' %}
+        </button>
+        <button id="toggleFilters--desktop" class="left btn btn--minimal toggle-filters--desktop">
+          <span class="hide-filters button">Hide filters</span>
+          <span class="show-filters button">Show filters</span>
+          {% include 'icon-filter' %}
+        </button>
+      </div>
+      {% assign obj = "" %}
+        {% for link in linklists.test-menu.links %}
+          {% if link.url == collection.url %}
+            {% assign obj = link %}
+          {% endif %} 
+        {% endfor %}
+      <div class="link_carousel">
+        <ul>
+          <li><a href="#" class="text_link active">ALL {{ collection.title }}</a></li>
+          {% for link in obj.links %}
+            <li><a href="{{ link.url }}" class="text_link {% if link.url == page.url %} active {% endif %}"><span>{{ link.title }}</span></a></li>
+          {% endfor %} 
+        </ul>
+      </div>
+      <div class="row text-right collection__sort">
+        {% include 'collection-sorting' %}
+      </div>
+    </div>
+    
+  	<div class="product_collection_data_p">
+      <div class="collection_data_breadcrumb_p">
+        {% include 'breadcrumb' %}
+      </div>
+      <div class="collection_data_product_amount_p">
+        {{ collection.products_count }} Products Available
+      </div>
+      <div class="collection_data_product_contact">
+        <a href="https://www.thepremiumcollection.co.uk/pages/contact-us">Contact </a> for Bespoke Orders
+      </div>
+    </div>  
+    
+    <div class="lvl1_brand_spotlight_p">
+      <div class="brand_spotlight_left_p_wrap" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('{{ collection.metafields.spot.image }}')">
+        <div class="brand_spotlight_left_p">
+          <p>designer {{ collection.title }} | brand spotlight</p>
+          <a href="{{ collection.metafields.spot.link }}">explore spotlight</a>
+        </div>
+      </div>
+      
+      <div class="brand_spotlight_right_p">
+        <a href="{{ all_products[pro1].url }}">
+        <div class="spotlight_product1_p">
+          <img src="{{ all_products[pro1].featured_media.preview_image | img_url: '360x' }}">
+          <p><span>{{ all_products[pro1].vendor }}</span><br>{{ all_products[pro1].title }}</p>
+          <p class="price">{{ all_products[pro1].price | money }}</p>
+        </div>
+        </a>
+        <a href="{{ all_products[pro2].url }}">
+        <div class="spotlight_product2_p">
+          <img src="{{ all_products[pro2].featured_media.preview_image | img_url: '360x' }}">
+          <p><span>{{ all_products[pro2].vendor }}</span><br>{{ all_products[pro2].title }}</p>
+          <p class="price">{{ all_products[pro2].price | money }}</p>
+        </div>
+        </a>
+      </div>
+    </div>
+    
+    {% if collection.metafields.text.title != blank %}
+      <h4 class="home__subtitle">{{ collection.metafields.text.title | escape }}</h4>
+    {% endif %}
+    
+    <div class="grid grid-uniform">
+      {% if collection_sidebar %}
+        <div class="grid__item large--one-quarter collection-filters" id="collectionFilters" {% if section.settings.hide_sidebar %}style="display: none;"{% endif %}>
+          {% include 'collections-sidebar' %}
+        </div>
+      {% endif %}
+      {% if collection_sidebar %}
+        <div class="grid__item collection-content page-margin large--three-quarters" {% if section.settings.hide_sidebar %}style="width: 100%;"{% endif %}>
+      {% else  %}
+        <div class="grid__item collection-content page-margin one-whole">
+      {% endif %}
+      <div class="grid-uniform">
+        {% for product in collection.products %}
+       	  {% include 'product-grid-item' %}
+          {% else %}
+            {% if collection.handle == 'all' and collection.current_tags == '' %}
+              {% include 'onboarding-empty-collection' %}
+            {% else %}
+              <div class="grid__item">
+                  <p>{{ 'collections.general.no_matches' | t }}</p>
+              </div>
+          {% endif %}
+        {% endfor %}
+       </div>
+          {% if paginate.pages > 1 %}
+          <hr>
+          <div class="text-center">
+            {% include 'pagination-custom' %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endpaginate %}
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Collection Grid",
+    "class": "index-section",
+    "settings": [
+	  {
+		"type": "url",
+		"id": "christmas_link",
+		"label": "Plus Sign Link for Christmas"
+	  },
+	  {
+		"type": "url",
+		"id": "furniture_link",
+		"label": "Plus Sign Link for Furniture"
+	  },
+	  {
+		"type": "url",
+		"id": "lighting_link",
+		"label": "Plus Sign Link for Lighting"
+	  },
+	  {
+		"type": "url",
+		"id": "home_link",
+		"label": "Plus Sign Link for Home Accessories"
+	  },
+	  {
+		"type": "url",
+		"id": "entertain_link",
+		"label": "Plus Sign Link for Entertaining"
+	  },
+	  {
+		"type": "url",
+		"id": "outdoor_link",
+		"label": "Plus Sign Link for Outdoor"
+	  },
+      {
+        "type":    "range",
+        "id":      "overlay_opacity",
+        "unit":    "%",
+        "min":     0,
+        "max":     100,
+        "step":    5,
+        "label":   "Image overlay opacity",
+        "info":    "Increase contrast for legible text.",
+        "default": 15
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,203 @@
+<!-- /sections/index-video.liquid -->
+{%- if section.settings.image -%}
+  {%- assign img_object = section.settings.image -%}
+  {%- assign img_small = section.settings.image | img_url: '18x' -%}
+  {%- assign img_api = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+{%- else -%}
+  {%- assign img_object = 'blank.svg' | asset_url -%}
+  {%- assign img_small =  'blank.svg' | asset_url -%}
+  {%- assign img_api = 'blank.svg' | asset_url -%}
+{%- endif -%}
+<div class="homepage-image fade-in-child preventOverflow homepageVideo {{ section.settings.color }} {{ section.settings.height }}" data-section-id="{{ section.id }}" data-section-type="video" id="FeaturedImage-{{ section.id }}"
+  {% if section.settings.parallax %}
+    data-parallax-src="{{ img_small }}"
+    data-src="{{ img_api }}"
+    data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+    data-aspectratio="{{  section.settings.image.aspect_ratio }}"
+    data-sizes="auto"
+    style="background-image: url('{{ section.settings.image | img_url: '1x1' }}');"
+  {% endif %}>
+  <div class="content--centered">
+    <div class="{{ section.settings.text_align }} preventOverflowContent">
+      {% if section.settings.button_image %}
+        {%- assign img_button = section.settings.button_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+        <a href="{{ section.settings.video_link }}" class="popupVideo">
+          <img class="lazyload image--flex"
+          alt="{{ section.settings.button_image.alt | default: section.settings.link_text }}"
+          src="{{ section.settings.button_image | img_url: '180x' }}"
+          data-src="{{ img_button }}"
+          data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+          data-aspectratio="{{  section.settings.button_image.aspect_ratio }}"
+          data-sizes="auto"/>
+          <noscript>
+            <img src="{{ section.settings.button_image | img_url: '540x' }}" alt="{{ section.settings.button_image.alt | default: section.settings.link_text }}" class="image--flex" />
+          </noscript>
+        </a>
+      {% else %}
+        {% unless section.settings.title == '' %}<h1 class="title--flex">{{ section.settings.title | escape }}</h1>{% endunless %}
+        {% unless section.settings.description == '' %}<p class="content--flex h4--body">{{ section.settings.description }}</p>{% endunless %}
+        {% if section.settings.video_link != '' and section.settings.show_play %}
+          {%- if section.settings.video_link.type == 'youtube' -%}
+            {% capture video_link %}https://www.youtube.com/watch?v={{ section.settings.video_link.id }}{% endcapture %}
+          {%- elsif section.settings.video_link.type == 'vimeo' -%}
+            {% capture video_link %}https://vimeo.com/{{ section.settings.video_link.id }}{% endcapture %}
+          {%- endif -%}
+          <a href="{{ video_link }}" class="popupVideo homepage-video__play">
+            <span class="icon icon-play">{% include 'svg-play' %}</span>
+            <span class="visually-hidden">{{ 'general.accessibility.play' | t }}</span>
+          </a>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  <div class="image-overlay image-overlay-{{ section.settings.overlay_opacity }}"></div>
+  {% if section.settings.height == 'use_image' %}
+  <div class="lazy-image" style="padding-top:{{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100}}%; background-image: url('{{ section.settings.image | img_url: '1x1' }}');">
+    <img class="lazyload fade-in" {% if section.settings.parallax %} style="opacity: 0;"{% endif %}
+      alt="{{ section.settings.image.alt | default: shop.name }}"
+      data-src="{{ img_api }}"
+      data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+      data-aspectratio="{{  section.settings.image.aspect_ratio }}"
+      data-parent-fit="cover"
+      data-sizes="auto"/>
+  </div>
+  {% endif %}
+  {% if section.settings.parallax == false and section.settings.height != 'use_image' %}
+    <div class="background-size-cover lazyload" data-bgset="{% include 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt }}"></div>
+  {% endif %}
+  {% if section.settings.autoplay == true and section.settings.video_link.id != '' %}
+    <div class="video-autoplay-wrapper"
+      data-video-autoplay
+      data-video-id="{{ section.settings.video_link.id }}"
+      data-video-type="{{ section.settings.video_link.type }}">
+      <div data-youtube-wrapper id="autoplay-video-{{ section.id }}"></div>
+    </div>
+  {% endif %}
+  {% if section.settings.height == 'use_screen_full' %}
+    <div class="scroll_icon_wrap">
+      <a href="#scroll-{{ section.id }}" class="scroll_link bloop">
+        <span class="scroll_icon">{% include 'svg-down' %}</span>
+      </a>
+    </div>
+    <div class="scroll__link" id="scroll-{{ section.id }}"></div>
+  {% endif %}
+  <noscript>
+    <img src="{{ img_object | img_url: '720x' }}" alt="{{ img_object.alt | default: section.settings.title }}" class="responsive-wide-image"/>
+  </noscript>
+</div>
+
+{% schema %}
+{
+  "name": "Video",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "video_url",
+      "id": "video_link",
+      "label": "Video link",
+      "accept": ["youtube", "vimeo"],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section height",
+      "default": "use_screen_two_thirds",
+      "options": [
+        { "value": "use_screen_full", "label": "Full screen height"},
+        { "value": "use_screen_two_thirds", "label": "Tall"},
+        { "value": "use_screen_one_half", "label": "Medium"},
+        { "value": "use_screen_one_third", "label": "Short"},
+        { "value": "use_image", "label": "Image height"}
+      ]
+    },
+    {
+      "type":    "range",
+      "id":      "overlay_opacity",
+      "min":     0,
+      "max":     100,
+      "step":    5,
+      "label":   "Image overlay opacity",
+      "info":    "Increase contrast for legible text.",
+      "default": 15
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "default": false,
+      "label": "Autoplay video in background"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play",
+      "default": true,
+      "label": "Show play button"
+    },
+    {
+      "type": "checkbox",
+      "id": "parallax",
+      "default": false,
+      "label": "Enable parallax scroll"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured video"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Subheading",
+      "default": "This area is used to describe your video’s details."
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Alignment",
+      "default": "text-center",
+      "options": [
+        { "value": "text-left", "label": "Align Left"},
+        { "value": "text-center", "label": "Align Center"},
+        { "value": "text-right", "label": "Align Right"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "color",
+      "label": "Text and button color",
+      "default": "homepage--white",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Button image (optional)"
+    },
+    {
+      "type": "image_picker",
+      "id": "button_image",
+      "label": "Button image",
+      "info": "1000 x 1000px .png max"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video",
+      "category": "Video"
+    }
+  ]
+}
+{% endschema %}

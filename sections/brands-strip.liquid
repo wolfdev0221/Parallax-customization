@@ -1,0 +1,63 @@
+<div class="section_brands_strip_p">
+  <div class="wrapper">
+    <div class="brands_strip_container_p">
+      <div class="brands_strip_title_p"> {{ section.settings.strip_title }} </div>
+      {% for block in section.blocks %}
+        <img class="brand_logo_p" src="{{ block.settings.brand_logo | img_url: 'master' }}" />
+      {% endfor %}
+    </div>
+    <div class="brands_strip_container_mobile_p">
+      <div class="brands_strip_title_p"> {{ section.settings.strip_title }} </div>
+      <div class="strip_slider_wrap_p">
+        <div class="strip_slider_p">
+          {% for block in section.blocks %}
+          <img class="brand_logo_p" src="{{ block.settings.brand_logo | img_url: 'master' }}" />
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Brands Strip",
+    "settings": [
+	  {
+		"type": "text",
+		"id": "strip_title",
+		"label": "Title for the brand strip"
+	  }
+	],
+    "blocks": [
+      {
+        "type": "Brand",
+        "name": "Brand",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "brand_logo",
+            "label": "Brand Logo"
+          },
+		  {
+			"type": "url",
+			"id": "brand_link",
+			"label": "Link to Brand"
+		  }
+        ]
+      }
+    ],
+	"presets": [
+      {
+        "name": "Brands Strip",
+        "category": "New Sections"
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

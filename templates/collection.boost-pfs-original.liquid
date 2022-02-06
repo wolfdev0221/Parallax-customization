@@ -1,0 +1,5 @@
+{% section 'collection' %}
+{% if collection.metafields.info.title != '' and collection.metafields.info.richtext != blank %}
+{% section 'collection-further-information' %}
+{% endif %}
+<div class="col_lower_main" style="width:100%"><div class="inner_lower_main" style="max-width:1170px;margin:0 auto;">{{ collection.metafields.collectionlower.lowerdata }}</div></div>

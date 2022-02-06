@@ -1,0 +1,110 @@
+<!-- /sections/page.liquid -->
+
+{%- for block in section.blocks -%}
+  {%- assign block_page = pages[block.settings.block_page] -%}
+  {%- if block_page.handle == page.handle -%}
+    <div data-section-id="{{ section.id }}" data-section-type="parallax">
+      {% if block.settings.image %}
+        {%- assign img_url = block.settings.image.src | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+        <div class="homepage-image fade-in-child {{ section.settings.text_color }} {{ section.settings.image_height }}" id="FeaturedImage-{{ section.id }}"
+          {% if section.settings.parallax %}
+            data-parallax-src="{{ block.settings.image | img_url: '18x' }}"
+            data-src="{{ img_url }}"
+            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+            data-aspectratio="{{  block.settings.image.aspect_ratio }}"
+            data-sizes="auto"
+            style="background-image: url('{{ block.settings.image | img_url: '1x1' }}');"
+          {% endif %}>
+          <div class="content--centered">
+            <div class="text-center">
+                <h1 class="title--flex sectionTitle">{{ page.title }}</h1>
+            </div>
+          </div>
+          <div class="image-overlay image-overlay-{{ section.settings.overlay_opacity }}"></div>
+          <div class="lazy-image" style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100}}%; background-image: url('{{ block.settings.image | img_url: '1x1' }}');">
+            <img class="lazyload fade-in" {% if section.settings.parallax %} style="opacity: 0;"{% endif %}
+              alt="{{ block.settings.image.alt | default: blog.title }}"
+              data-src="{{ img_url }}"
+              data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+              data-aspectratio="{{  block.settings.image.aspect_ratio }}"
+              data-parent-fit="cover"
+              data-sizes="auto"/>
+          </div>
+          <noscript>
+            <img src="{{ block.settings.image | img_url: '720x' }}" alt="{{ block.settings.image | default: blog.title }}" class="responsive-wide-image"/>
+          </noscript>
+        </div>
+      {% endif %}
+    </div>
+  {%- endif -%}
+{%- endfor -%}
+
+
+
+{% schema %}
+{
+  "name": "Page images",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "parallax",
+      "default": false,
+      "label": "Enable parallax scroll"
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Image height",
+      "default": "use_screen_one_third",
+      "options": [
+        { "value": "use_image", "label": "Image height"},
+        { "value": "use_screen_two_thirds", "label": "Tall"},
+        { "value": "use_screen_one_half", "label": "Medium"},
+        { "value": "use_screen_one_third", "label": "Short"},
+        { "value": "use_screen_one_fifth", "label": "Tiny"}
+      ]
+    },
+    {
+      "type":    "range",
+      "id":      "overlay_opacity",
+      "min":     0,
+      "max":     100,
+      "step":    5,
+      "label":   "Image overlay opacity",
+      "info":    "Increase contrast for legible text.",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "default": "homepage--white",
+      "label": "Text color",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "page_image",
+      "name": "Page",
+      "settings": [
+        {
+          "label": "Page",
+          "id": "block_page",
+          "type": "page",
+          "info": "Image will only show on this page"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

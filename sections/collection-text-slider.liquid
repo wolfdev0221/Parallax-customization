@@ -1,0 +1,222 @@
+{%- assign collection = collections[section.settings.collection] -%}
+{%- assign article = articles[section.settings.blogpost] -%}
+{%- assign post_count = 1 -%}
+{% assign bloglink = section.settings.blog_link %}
+
+<div class="collection-text-slider home-section">
+  <div class="activate"></div>
+  <div class="wrapper">
+    <div class="mobile-section mobile-cts-header">
+      <div class="ns-title-text">
+        <h3>{{ section.settings.title }}</h3>
+      </div>
+      <div class="ns-description-text">
+        <p>
+          {{ section.settings.description }}
+        </p>
+      </div>
+      <div class="ns-shop-text">
+        <a href="{{ bloglink }}">Shop the Collection</a>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="grid__item large--one-half">
+        <div class="blog__article blog__article--card blog__article--image">
+          <a class="blog__link" href="{{ bloglink }}" aria-label="{{ section.settings.blog_title }}">
+            <div class="blog__article blog__article--card{% if section.settings.blog_image %} blog__article--image{% endif %}">
+              <div class="blog_article_overlay"></div>
+              <div class="blog_article_image_wrap">
+                <div class="blog_article_image_container" style="background-image: url('{{ section.settings.blog_image | img_url: 'master' }}')"></div>
+              </div>
+              <div class="blog_article_title_container_wrap_p_desktop">
+                <div class="blog_article_title_container_desktop">
+                  <h5>{{ section.settings.blog_title }}</h5>
+                </div>
+              </div>
+              <div class="blog-tagname">
+                <div class="bt-content button">
+                  {{ section.settings.type_blog }} <span class="bt-bar"> | </span> {{ section.settings.date_blog }}
+                </div>
+              </div>
+              {% comment %}
+              {% if article.image %}
+              {%- assign img_object = article.image -%}
+              <div class="blog__article__overlay lazyload" data-bgset="{% include 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt }}"></div>
+              <noscript>
+                <div class="blog__article__overlay" style="background-image: url('{{ article.image | img_url: 'x540' }}')"></div>
+              </noscript>
+              {% endif %}
+              <div class="blog__article__content equalHeightColumn">
+                <h3 class="h3 blog__article__title">{{ article.title }}</h3>
+                {% unless article.image %}
+                <div class="rte blog__article__text">
+                  {% if article.excerpt == blank %}
+                  {{ article.content | strip_html | truncate: 200 }}
+                  {% else %}
+                  {{ article.excerpt | strip_html | truncate: 200 }}
+                  {% endif %}
+                </div>
+                {% endunless %}
+              </div>
+              {% endcomment %}
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="grid__item large--one-half cts-content mobile-hide">
+        <div class="ns-title-text">
+          <h3>{{ section.settings.title }}</h3>
+        </div>
+        <div class="ns-description-text">
+          <p>
+            {{ section.settings.description }}
+          </p>
+        </div>
+        <div class="ns-shop-text">
+          <a href="{{ bloglink }}" class="button">Shop the Collection</a>
+        </div>
+        <div class="ns-shop-slider clearfix">
+          <div class="slider-a-container">
+            <div class="slider-a single-item">
+              {% for block in section.blocks %}
+              {% if block.type == 'slider_1_slide' %}
+              <div>
+              <a href="{{ block.settings.link }}"><img src="{{ block.settings.image | img_url:'500x500', crop:'center' }}" alt="Slide" /></a>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <div class="slider-a-2-container">
+            <div class="slider-a-2 single-item">
+              {% for block in section.blocks %}
+              {% if block.type == 'slider_2_slide' %}
+              <div>
+              <a href="{{ block.settings.link }}"><img src="{{ block.settings.image | img_url:'310x544', crop:'center' }}" alt="Slide" /></a>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="slider-a-dot-hold mobile-hide"></div>
+    <div class="mobile-section mobile-x-slider">
+      <div class="ns-shop-slider clearfix">
+        <div class="slider-x-container">
+          <div class="slider-x single-item">
+            {% for block in section.blocks %}
+            {% if block.type == 'slider_1_slide' %}
+            <div>
+              <a href="{{ block.settings.link }}"><img src="{{ block.settings.image | img_url:'500x500', crop:'center' }}" alt="Slide" /></a>
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="slider-x-2-container">
+          <div class="slider-x-2 single-item">
+            {% for block in section.blocks %}
+            {% if block.type == 'slider_2_slide' %}
+            <div>
+            <a href="{{ block.settings.link }}"><img src="{{ block.settings.image | img_url:'310x537', crop:'center' }}" alt="Slide" /></a>
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-x-dot-hold"></div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Collection/Text/Slider",
+    "settings": [
+  		{
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Morbi Convallis Est Ac Tempor"
+  		},
+		{
+            "type": "textarea",
+            "id": "description",
+            "label": "Description",
+            "default": "Nam et justo id dolor placerat fermentum. Pellentesque congue aliquet aliquam. Proin faucibus mauris purus, rutrum mollis neque euismod eget. Vivamus mi risus, faucibus at condimentum vel, sollicitudin ut purus."
+  		},
+		{
+			"type": "image_picker",
+			"id" : "blog_image",
+			"label": "Select Main image"
+		},
+		{
+			"type": "url",
+			"id": "blog_link",
+			"label": "Link for Main Image"
+		},
+		{
+            "type": "text",
+            "id": "blog_title",
+            "label": "Collection Title for Blog"
+        },
+        {
+            "type": "text",
+            "id": "type_blog",
+            "label": "Collection type for Blog"
+        },
+        {
+            "type": "text",
+            "id": "date_blog",
+            "label": "Collection date for Blog"
+        }
+	],
+	"blocks": [
+      {
+        "type": "slider_1_slide",
+        "name": "Slider 1 - Slide",
+        "settings": [
+          {
+			"type": "image_picker",
+            "label": "Image",
+            "id": "image"
+          },
+          {
+            "type": "text",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      },
+      {
+        "type": "slider_2_slide",
+        "name": "Slider 2 - Slide",
+        "settings": [
+			{
+              "type": "image_picker",
+              "label": "Image",
+              "id": "image"
+			},
+            {
+              "type": "text",
+              "id": "link",
+              "label": "Link"
+            }
+        ]
+      }
+    ],
+	"presets": [{
+      "name": "Collection/Text/Slider",
+      "category": "New Sections"
+  	}]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

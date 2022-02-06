@@ -1,0 +1,313 @@
+{%- assign transparent_header = true -%}
+
+<style>
+  .header--transparent:not(.header--sticky):not(.header--stuck) .nav--desktop .main-menu>li>a{
+    color: {{ section.settings.transparent_text_color }};
+  }
+  .header--transparent:not(.header--sticky):not(.header--stuck) .icon{
+    fill:  {{ section.settings.transparent_text_color }};
+  }
+  .header--transparent:not(.header--sticky):not(.header--stuck) .header-cart__bubble{
+    background-color: {{ section.settings.transparent_text_color | color_modify: 'alpha', 0.5 }};
+  }
+</style>
+
+<div class="header__wrapper{% if transparent_header %} header--transparent{% endif %} active_header"
+  data-header-transparent="{{ transparent_header }}"
+  data-header-sticky="{{ section.settings.header_sticky }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="header">
+  
+  <header class="site-header {{ section.settings.height }}" role="banner" style="opacity: 0">
+    <div class="wrapper">
+      <div class="nav--desktop">
+        <center> {% include 'nav-contents' %} </center>
+      </div>
+      <div class="nav--mobile">
+        {% include 'nav-contents' with 'mobile' %}
+      </div>
+    </div>
+  </header>
+</div>
+
+{% if template.name == 'index' %}
+<div class="header__wrapper fixed_header_p"
+  data-section-id="{{ section.id }}"
+  data-section-type="header">
+{% comment %}
+  {% if section.settings.header_enable_account or section.settings.header_enable_search or section.settings.header_message != '' %}
+  <div class="info-bar showMobile">
+    <div class="wrapper text-center">
+
+      {% if shop.customer_accounts_enabled and section.settings.header_enable_account %}
+        <div class="header-account-link">
+          <a href="{{ routes.account_url }}">
+            <img src="{{ 'account.svg' | asset_url }}" alt="{{ 'customer.account.title' | t }}">
+          </a>
+        </div>
+      {% endif %}
+
+      {% if section.settings.header_message != '' %}
+      <div class="header-message uppercase{% if section.settings.header_enable_account or section.settings.header_enable_search %} header-message--crowded{% endif %}">
+        {% if section.settings.header_message_url != blank %}
+          <a href="{{ section.settings.header_message_url }}">{{ section.settings.header_message | escape }}</a>
+        {% else %}
+          {{ section.settings.header_message | escape }}
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {% if section.settings.header_enable_search %}
+        <div class="header-search__wrapper">
+          <div class="header-search">
+            <form action="{{ routes.search_url }}" method="get" class="input-group search" role="search">
+              {% if section.settings.search_only_products %}<input type="hidden" name="type" value="product">{% endif %}
+              <input class="search-bar" type="search" name="q" title="{{ 'general.search.submit' | t }}">
+              <button type="submit" class="btn search-btn" aria-label="{{ 'general.search.submit' | t }}"></button>
+            </form>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+  {% endif %}
+{% endcomment %}
+  <header class="site-header {{ section.settings.height }}" role="banner">
+    <div class="wrapper">
+      <div class="nav--desktop">
+        <center> {% include 'nav-contents' %} </center>
+      </div>
+      <div class="nav--mobile">
+        {% include 'nav-contents' with 'mobile' %}
+      </div>
+    </div>
+    <div class="header_overlay_p">
+    </div>
+  </header>
+</div>
+{% endif %}
+
+{% if template.name != 'index' %} 
+<div class="header__wrapper normal_page_p"
+  data-header-transparent="{{ transparent_header }}"
+  data-header-sticky="{{ section.settings.header_sticky }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="header">
+  <header class="site-header {{ section.settings.height }}" role="banner">
+    <div class="wrapper">
+      <div class="nav--desktop">
+        <center> {% include 'nav-contents' with 'desktop' %} </center>
+      </div>
+      <div class="nav--mobile">
+        {% include 'nav-contents' with 'mobile' %}
+      </div>
+    </div>
+  </header>
+</div>
+
+{% endif %}
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  {% if section.settings.logo %}
+    {% assign image_size = section.settings.logo.width | append:'x' %}
+    "logo": {{ section.settings.logo | img_url: image_size | prepend: "https:" | json }},
+  {% endif %}
+  "sameAs": [
+    {{ settings.social_twitter_link | json }},
+    {{ settings.social_facebook_link | json }},
+    {{ settings.social_instagram_link | json }},
+    {{ settings.social_pinterest_link | json }},
+    {{ settings.social_google_link | json }},
+    {{ settings.social_youtube_link | json }},
+    {{ settings.social_vimeo_link | json }},
+    {{ settings.social_tumblr_link | json }},
+    {{ settings.social_fancy_link | json }}
+  ],
+  "url": {{ shop.url | append: page.url | json }}
+}
+</script>
+
+{% if template.name == 'index' %}
+  {% assign potential_action_target = shop.url | append: "/search?q={search_term_string}" %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ shop.url | append: page.url | json }}
+    }
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type":    "range",
+      "id":      "logo_max_limit",
+      "min":     5,
+      "max":     495,
+      "step":    5,
+      "unit":    "px",
+      "label":   "logo width",
+      "default": 120
+    },
+    {
+       "type": "radio",
+       "id": "home_logo",
+       "options": [
+          { "value": "white", "label": "White Logo"},
+          { "value": "black", "label": "Black Logo"}
+       ],
+       "label": "Logo Color for Homepage"
+    },
+    {
+      "type": "link_list",
+      "label": "Menu",
+      "id": "main_menu_linklist"
+    },
+    {
+      "type": "header",
+      "content": "Sticky header"
+    },
+    {
+      "type": "select",
+      "id": "header_sticky",
+      "options": [
+        { "value": "static", "label": "Default header"},
+        { "value": "sticky", "label": "Sticky header"},
+        { "value": "scroll", "label": "Sticky header only when scrolling up"}
+      ],
+      "label": "Header behavior",
+      "default": "static"
+    },
+    {
+      "type": "header",
+      "content": "Transparent header"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_home",
+      "label": "Enable on the home page",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_collection",
+      "label": "Enable on collections",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_blog",
+      "label": "Enable on the blog",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_article",
+      "label": "Enable on articles",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_page",
+      "label": "Enable on pages",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "transparent_text_color",
+      "label": "Text and icons color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "image_picker",
+      "id": "transparent_logo",
+      "label": "Alternate logo"
+    },
+    {
+      "type": "header",
+      "content": "Top Bar"
+    },
+    {
+      "type": "text",
+      "id": "header_message",
+      "label": "Announcement text",
+      "info": "45 characters or less recommended"
+    },
+    {
+      "type": "url",
+      "id": "header_message_url",
+      "label": "Announcement link"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_enable_account",
+      "default": true,
+      "label": "Show account link in header"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_enable_search",
+      "default": true,
+      "label": "Show search in header"
+    },
+    {
+      "type": "checkbox",
+      "id": "search_only_products",
+      "label": "Only search products"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega-menu-image-settings",
+      "name": "Mega Menu Image Settings",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "Menu Title"
+        },
+    	{
+          "type": "image_picker",
+          "id": "meganav_image",
+          "label": "Meganav image for Furniture",
+          "info": "500 x 800px .jpg max"
+        },
+        {
+          "type": "text",
+          "id": "meganav_image_title",
+          "label": "Meganav image title for Furniture"
+        },
+        {
+          "type": "text",
+          "id": "meganav_image_text",
+          "label": "Meganav image link text for Furniture"
+        },
+        {
+          "type": "url",
+          "id": "meganav_link",
+          "label": "Meganav Image Link for Furniture"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

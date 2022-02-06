@@ -1,0 +1,20 @@
+<div class="homepage-page {{ section.settings.homepage_page_color }}">
+  <div class="wrapper">
+    <div class="grid">
+      <div class="grid__item large--five-sixths push--large--one-twelfth" style="left:0">
+        <h4 class="home__subtitle1" style="text-align:left">{{ collection.metafields.info.title | escape }}</h4>
+        <div class="homepage-page__content rte" style="text-align:left">
+          {{ collection.metafields.info.richtext }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Section name",
+    "settings": []
+  }
+{% endschema %}

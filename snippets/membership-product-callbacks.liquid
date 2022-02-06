@@ -1,0 +1,15 @@
+<script type="application/json" id="MembershipJson-{{ section.id }}">
+  {
+    {%- for variant in product.variants %}
+ "{{ variant.id }}": {
+    {%- if variant.metafields.charge_rabbit.amount %}
+      "amount": {{ variant.metafields.charge_rabbit.amount }},
+      "interval": {{ variant.metafields.charge_rabbit.interval | prepend: "/" | json }}
+    {%- else %}
+      "amount": 0,
+      "interval": "/month"
+    {%- endif %}
+    }{% unless forloop.last == true %},{% endunless %}
+ {%- endfor %}
+ }
+</script>

@@ -1,0 +1,625 @@
+<!-- /sections/collection.liquid -->
+
+{%- assign grid_offset = '' -%}
+{%- assign products_count = collection.products_count -%}
+{%- case section.settings.grid_setting_large -%}
+{%- when 1 -%}
+{%- assign grid_width_large = 'large--one-whole' -%}
+{%- when 2 -%}
+{%- assign grid_width_large = 'large--one-half' -%}
+{%- if products_count == 1 -%}
+{%- assign grid_offset = 'push--large--one-quarter' -%}
+{%- endif -%}
+{%- when 3 -%}
+{%- assign grid_width_large = 'large--one-third' -%}
+{%- if products_count == 1 -%}
+{%- assign grid_offset = 'push--large--one-third' -%}
+{%- elsif products_count == 2 -%}
+{%- assign grid_offset = 'push--large--one-sixth' -%}
+{%- endif -%}
+{%- when 4 -%}
+{%- assign grid_width_large = 'large--one-quarter' -%}
+{%- if products_count == 1 -%}
+{%- assign grid_offset = 'push--large--three-eighths' -%}
+{%- elsif products_count == 2 -%}
+{%- assign grid_offset = 'push--large--one-quarter' -%}
+{%- elsif products_count == 3 -%}
+{%- assign grid_offset = 'push--large--one-eighth' -%}
+{%- endif -%}
+{%- when 5 -%}
+{%- assign grid_width_large = 'large--one-fifth' -%}
+{%- if products_count == 1 -%}
+{%- assign grid_offset = 'push--large--two-fifths' -%}
+{%- elsif products_count == 2 -%}
+{%- assign grid_offset = 'push--large--three-tenths' -%}
+{%- elsif products_count == 3 -%}
+{%- assign grid_offset = 'push--large--one-fifth' -%}
+{%- elsif products_count == 4 -%}
+{%- assign grid_offset = 'push--large--one-tenth' -%}
+{%- endif -%}
+{%- when 6 -%}
+{%- assign grid_width_large = 'large--one-sixth' -%}
+{%- if products_count == 1 -%}
+{%- assign grid_offset = 'push--large--five-twelfths' -%}
+{%- elsif products_count == 2 -%}
+{%- assign grid_offset = 'push--large--two-sixths' -%}
+{%- elsif products_count == 3 -%}
+{%- assign grid_offset = 'push--large--three-twelfths' -%}
+{%- elsif products_count == 4 -%}
+{%- assign grid_offset = 'push--large--one-sixth' -%}
+{%- elsif products_count == 5 -%}
+{%- assign grid_offset = 'push--large--one-twelfth' -%}
+{%- endif -%}
+{%- endcase -%}
+{%- case section.settings.grid_setting_medium -%}
+{%- when 1 -%}
+{%- assign grid_width_medium = 'medium--one-whole' -%}
+{%- when 2 -%}
+{%- assign grid_width_medium = 'medium--one-half' -%}
+{%- when 3 -%}
+{%- assign grid_width_medium = 'medium--one-third' -%}
+{%- when 4 -%}
+{%- assign grid_width_medium = 'medium--one-quarter' -%}
+{%- endcase -%}
+{%- case section.settings.grid_setting_small -%}
+{%- when 1 -%}
+{%- assign grid_width_small = 'small--one-whole' -%}
+{%- when 2 -%}
+{%- assign grid_width_small = 'small--one-half' -%}
+{%- when 3 -%}
+{%- assign grid_width_small = 'small--one-third' -%}
+{%- endcase -%}
+
+{%- assign product_count = 48 -%}
+{%- if grid_width_large == 'large--one-whole' -%}
+{%- assign product_count = 20 -%}
+{%- elsif grid_width_large == 'large--one-half' -%}
+{%- assign product_count = 50 -%}
+{%- elsif grid_width_large == 'large--one-third' -%}
+{%- assign product_count = 48 -%}
+{%- elsif grid_width_large == 'large--one-quarter' -%}
+{%- assign product_count = 48 -%}
+{%- elsif grid_width_large == 'large--one-fifth' -%}
+{%- assign product_count = 50 -%}
+{%- endif -%}
+{% if collection.metafields.level.isFirst == 1 %}
+{% assign count = 30 %}
+{% else %}
+{% assign count = 29 %}
+{% endif %}
+{%- paginate collection.products by count -%}
+
+
+{%- assign collection_sidebar = false -%}
+{%- if section.settings.collection_custom_nav_list != blank or section.settings.collection_standard_nav or section.settings.collection_tag_nav -%}
+{%- assign collection_sidebar = true -%}
+{%- endif -%}
+
+{%- assign hide_sidebar = "sidebar--hidden" -%}
+{%- if section.settings.hide_sidebar -%}
+{%- assign hide_sidebar = "sidebar--hidden" -%}
+{%- endif -%}
+
+{% assign brand_select = "" %}
+{% assign brand_select_space = "" %}
+{% for product in collection.products %}
+  {% assign brand_select = brand_select | append: product.metafields.belong.collection | append: ',' %}
+  {% assign brand_select_space = brand_select_space | append: product.metafields.belong.collection_space | append: ',' %}
+{% endfor %}
+{% assign brand_select = brand_select | split: ',' | uniq | join: ',' %}
+{% assign brand_select_space = brand_select_space | split: ',' | uniq | join: ',' %}
+{% assign my_products = brand_select | remove_last: ',' | split: ',' %}
+{% assign my_products_space = brand_select_space | remove_last: ',' | split: ',' %}
+{% assign img_object = collection.image %}
+{% assign pro1 = collection.metafields.spot.pro1 %}
+{% assign pro2 = collection.metafields.spot.pro2 %}
+
+{% assign obj = "" %}
+{% assign obj1 = "" %}
+{% assign sub_obj = "" %}
+{% for link in linklists.test-menu.links %}
+  {% if link.url == collection.url %}
+	{% assign obj1 = link %}
+  {% endif %}
+  {% if link.links != blank %}
+    {% for child_link in link.links %}
+      {% if collection.url == child_link.url %}
+        {% assign obj = link %}
+        {% assign sub_obj = child_link %}
+      {% endif %}
+      {% if child_link.links != blank %}
+        {% for grandchild_link in child_link.links %}  
+          {% if collection.url == grandchild_link.url %}
+            {% assign obj = link %}
+            {% assign sub_obj = child_link %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}   
+    {% endfor %}
+  {% endif %} 
+{% endfor %}
+
+<div data-section-id="{{ section.id }}" data-section-type="parallax">
+
+
+  {% unless collection.metafields.level.isFirst %}
+  <div class="collection_link_carousel_lvl2_p_mobile">
+    {% if collection.metafields.mode.brand_mode == 1 %}
+    <ul>
+      <li><a href="https://www.thepremiumcollection.co.uk/pages/brands" class="text_link ">ALL</a></li>
+      <li><a href="https://www.thepremiumcollection.co.uk/pages/furniture-brands" class="text_link">FURNITURE</a></li>
+      <li><a href="https://www.thepremiumcollection.co.uk/pages/lighting-brands" class="text_link">LIGHTING</a></li>
+      <li><a href="https://www.thepremiumcollection.co.uk/pages/home-accessories-brands" class="text_link">HOME ACCESSORIES</a></li>
+      <li><a href="https://www.thepremiumcollection.co.uk/pages/entertaining-brands" class="text_link">ENTERTAINING</a></li>
+      <li><a href="https://www.thepremiumcollection.co.uk/pages/outdoor-brands" class="text_link">OUTDOOR</a></li>
+    </ul>
+    {% else  %}
+    <ul>
+      <li><a href="{{ obj.url }}">ALL {{ obj.title }}</a></li>
+      {% for link in obj.links %}
+      <li><a href="{{ link.url }}" class="text_link {% if link == sub_obj %} active {% endif %}"><span>{{ link.title }}</span></a></li>
+      {% endfor %} 
+    </ul>
+    {% endif %}
+  </div>
+  <div class="link_carousel">
+    {% if collection.metafields.mode.brand_mode == 1 %}
+    <ul>
+      <li><a href="{{ collection.url }}" class="active">ALL {{ collection.title }}</a></li>
+    </ul>
+    {% else %}
+    <ul>
+      <li><a href="{{ sub_obj.url }}" {% if sub_obj.url == collection.url %} class="active" {% endif %} >ALL {{ sub_obj.title }}</a></li>
+      {% for link in sub_obj.links %}
+      <li><a href="{{ link.url }}" class="text_link {% if link.url == collection.url %} active {% endif %}"><span>{{ link.title }}</span></a></li>
+      {% endfor %} 
+    </ul>
+    {% endif %}
+  </div>  
+  {% endunless %}
+  {% if collection.metafields.level.isFirst %}
+  {% include 'collection-banner' %}
+  {% endif %}
+  {% unless collection.metafields.level.isFirst %}
+  <div class="collection_product_banner3_p">
+    <div class="banner_wrap3_p">
+      <div class="banner_rightside_p_mobile" style="background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url('{{ collection.image.src | img_url: 'x540' }}')">
+      </div>
+      <div class="banner_leftside_p">
+        <h3 class="banner_title_p">
+          {% if collection.metafields.mode.brand_mode == 1 %}
+          {{ collection.title }}
+          {% else %}
+          {{ collection.metafields.text.banner_title }}
+          {% endif %}
+        </h3>
+        <div class="banner_text_p">{{ collection.metafields.text.banner_text }}</div>
+        <a href="{% if collection.metafields.mode.brand_mode == 1 %}https://www.thepremiumcollection.co.uk/pages/top-level-brand{% else %}{{ collection.metafields.banner_link.banner_button_link }}{% endif %}" class="banner_button_p">{% if collection.metafields.mode.brand_mode == 1 %}VIEW ALL BRANDS{% else %}{{ collection.metafields.button_text.banner_button_text }}{% endif %}</a>
+      </div>
+      <div class="banner_rightside_p" style="background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url('{{ collection.image.src | img_url: 'x1024' }}')">
+      </div>
+    </div>
+  </div>
+  {% endunless %}
+  <div class="collection_action_wrap_p">
+    <div class="collection_action_p">
+      {% if section.settings.collection_sorting or collection_sidebar %}
+      {% if collection_sidebar %}
+      <div class="text-left sidebar--hidden" data-sidebar-toggle>
+        <button id="toggleFilters" class="left btn btn--clear uppercase toggle-filters">
+          {% include 'icon-filter' %}
+        </button>
+        <button id="toggleFilters--desktop" class="left btn btn--minimal toggle-filters--desktop">
+          <span class="hide-filters button">Hide filters</span>
+          <span class="show-filters button">Show filters</span>
+          {% include 'icon-filter' %}
+        </button>
+      </div>
+      {% endif %}
+      {% if collection.metafields.level.isFirst == 1 %}      
+      <div class="link_carousel1">
+        <ul>
+          <li><a href="#" class="text_link active">ALL {{ collection.title }}</a></li>
+          {% for link in obj1.links %}
+          <li><a href="{{ link.url }}" class="text_link"><span>{{ link.title }}</span></a></li>
+          {% endfor %} 
+        </ul>
+      </div>
+      {% else %}
+      <div class="collection_link_carousel_lvl2_p">
+        {% if collection.metafields.mode.brand_mode == 1 %}
+        <ul>
+          <li><a href="https://www.thepremiumcollection.co.uk/pages/brands" class="text_link ">ALL</a></li>
+          <li><a href="https://www.thepremiumcollection.co.uk/pages/furniture-brands" class="text_link">FURNITURE</a></li>
+          <li><a href="https://www.thepremiumcollection.co.uk/pages/lighting-brands" class="text_link">LIGHTING</a></li>
+          <li><a href="https://www.thepremiumcollection.co.uk/pages/home-accessories-brands" class="text_link">HOME ACCESSORIES</a></li>
+          <li><a href="https://www.thepremiumcollection.co.uk/pages/entertaining-brands" class="text_link">ENTERTAINING</a></li>
+          <li><a href="https://www.thepremiumcollection.co.uk/pages/outdoor-brands" class="text_link">OUTDOOR</a></li>
+        </ul>
+        {% else  %}
+        <ul>
+          <li><a href="{{ obj.url }}">ALL {{ obj.title }}</a></li>
+          {% for link in obj.links %}
+          <li><a href="{{ link.url }}" class="text_link {% if link == sub_obj %} active {% endif %}"><span>{{ link.title }}</span></a></li>
+          {% endfor %} 
+        </ul>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% if section.settings.collection_sorting %}
+      <div class="row text-right collection__sort">
+        {% include 'collection-sorting' %}
+        <i class="fa fa-sort"></i>
+      </div>
+      {% endif %}
+      {% endif %}
+    </div>
+    
+    {% unless collection.metafields.level.isFirst == 1 %}
+    <div class="collection_link_carousel_lvl3_p">
+      {% if collection.metafields.mode.brand_mode == 1 %}
+      <ul>
+        <li><a href="{{ collection.url }}" class="active">ALL {{ collection.title }}</a></li>
+      </ul>
+      {% else %}
+      <ul>
+        <li><a href="{{ sub_obj.url }}" {% if collection.url == sub_obj.url %} class="active" {% endif %} >ALL {{ sub_obj.title }}</a></li>
+        {% for link in sub_obj.links %}
+        <li><a href="{{ link.url }}" class="text_link {% if link.url == collection.url %} active {% endif %}"><span>{{ link.title }}</span></a></li>
+        {% endfor %} 
+      </ul>
+      {% endif %}
+    </div>
+    {% endunless %}
+    
+    <div class="product_collection_data_p">
+      <div class="collection_data_breadcrumb_p">
+        {% include 'breadcrumb' %}
+      </div>
+      <div class="collection_data_product_amount_p">
+        {{ collection.products_count }} Products Available
+      </div>
+      <div class="collection_data_product_contact">
+        <a href="#">Contact </a> for Bespoke Orders
+      </div>
+    </div> 
+  </div>
+  {% if collection.metafields.mode.brand_mode == 1 %}
+  <div class="collection_brand_product_type_p">
+    <div class="collection_brand_product_type_select_p_wrap">
+      <select class="collection_brand_product_type_select_p" disabled>
+        <option value="all">Product Type</option>
+        {% for i in (0..my_products.size) limit:my_products.size %}
+        <option value="{{ my_products[i] }}"> {{ my_products_space[i] }} </option>
+        {% endfor %}
+      </select>
+      <i class="fa fa-sort"></i>
+    </div>
+  </div>
+  {% assign tmp = collection.title | slice:0 %}
+  <div class="brand_carousel_wrap_p">
+    <div class="brand_carousel_p">
+      <p class="text_p">Related brands:</p>
+      <div class="brand_carousel_container_p">
+        <ul>
+          {% for loop in collections %}
+          {% assign tmp1 = loop.title | slice:0 %}
+          {% if loop.metafields.mode.brand_mode == 1 and tmp1 == tmp %}
+          <li><a href="{{ loop.url }}" class="text_link {% if loop == collection %} active {% endif %}"><span>{{ loop.title }}</span></a></li>
+          {% endif %}
+          {% endfor %} 
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="collection {{ hide_sidebar }}" data-sidebar-toggle>
+    <div class="wrapper">
+      {% if collection.metafields.level.isFirst == 1 %}
+      <div class="lvl1_brand_spotlight_p">
+        <div class="brand_spotlight_left_p_wrap" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('{{ collection.metafields.spot.image }}')">
+          <div class="brand_spotlight_left_p">
+            <p>designer {{ collection.title }} | brand spotlight</p>
+            <a href="{{ collection.metafields.spot.link }}">explore spotlight</a>
+          </div>
+        </div>
+
+        <div class="brand_spotlight_right_p">
+          <a href="{{ all_products[pro1].url }}">
+            <div class="spotlight_product1_p">
+              <img src="{{ all_products[pro1].featured_media.preview_image | img_url: '360x' }}">
+              <p><span>{{ all_products[pro1].vendor }}</span><br>{{ all_products[pro1].title }}</p>
+              <p class="price">{{ all_products[pro1].price | money }}</p>
+            </div>
+          </a>
+          <a href="{{ all_products[pro2].url }}">
+            <div class="spotlight_product2_p">
+              <img src="{{ all_products[pro2].featured_media.preview_image | img_url: '360x' }}">
+              <p><span>{{ all_products[pro2].vendor }}</span><br>{{ all_products[pro2].title }}</p>
+              <p class="price">{{ all_products[pro2].price | money }}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      {% if collection.metafields.text.title != blank %}
+      <h4 class="home__subtitle">{{ collection.metafields.text.title | escape }}</h4>
+      {% endif %}
+      {% endif %}
+
+      {% comment %}
+      <div class="collection__heading--below">
+        {%- if collection.image == nil or section.settings.show_title_below or section.settings.show_image == false -%}
+        {%- if section.settings.show_title -%}
+        <h1 class="collection__heading--below title--flex {{ section.settings.align_text }}">{{ collection.title }}</h1>
+        {%- endif -%}
+        {%- endif -%}
+        {%- if collection.image == nil or section.settings.show_description_below or section.settings.show_image == false -%}
+        {%- if section.settings.show_description and collection.description.size > 0 -%}
+        <div class="collection__heading--below {{ section.settings.description_font_size }} {{ section.settings.align_text }}">
+          {% assign descriptions = collection.description | split: "<!-- split -->" %}
+          {% assign short_desc = descriptions[0] %}
+          {% assign long_desc = descriptions[1] %}
+          {{ short_desc }}
+        </div>
+        {%- endif -%}
+        {%- endif -%}
+      </div>
+      {% endcomment %}	
+
+
+      <div class="grid collection-wrapper">
+        {% if collection_sidebar %}
+        <div class="grid__item large--one-quarter collection-filters" id="collectionFilters" {% if section.settings.hide_sidebar %}style="display: none;"{% endif %}>
+          {% include 'collections-sidebar' %}
+        </div>
+        {% endif %}
+        {% if collection_sidebar %}
+        <div class="grid__item collection-content page-margin large--three-quarters" {% if section.settings.hide_sidebar %}style="width: 100%;"{% endif %}>
+          {% else  %}
+          <div class="grid__item collection-content page-margin one-whole">
+            {% endif %}
+            <div class="grid-uniform">
+              {% unless collection.metafields.level.isFirst == 1 %}
+              <div class="collection_side_image_section">
+                <a href="{{ collection.metafields.image_link.image_button_link }}" style="text-decoration: none">
+                  <div class="collection_side_image_section_wrap" style="background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url('{{ collection.metafields.tower_image.tower_image_url }}')">
+                    <h3 class="collection_side_image_title">{{ collection.metafields.tower_text.tower_text_title }}</h3>
+                    {% if collection.metafields.mode.brand_mode == 1 %}
+                    <button href="{{ collection.metafields.image_link.image_button_link }}" class="collection_side_image_button">featured product</button>
+                    {% else %}
+                    <button href="{{ collection.metafields.image_link.image_button_link }}" class="collection_side_image_button">view products</button>
+                    {% endif %}
+                  </div>
+                </a>
+              </div>
+              {% endunless %}
+              {% for product in collection.products %}
+              {% include 'product-grid-item' %}
+              {% else %}
+              {% if collection.handle == 'all' and collection.current_tags == '' %}
+              {% include 'onboarding-empty-collection' %}
+              {% else %}
+              <div class="grid__item">
+                <p>{{ 'collections.general.no_matches' | t }}</p>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+            {% if paginate.pages > 1 %}
+            <hr>
+            <div class="text-center">
+              {% include 'pagination-custom' %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endpaginate %}
+        {{ long_desc }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection page",
+  "settings": [
+    {
+    "type": "header",
+    "content": "Banner Setting"
+    },
+    {
+      "type": "header",
+      "content": "Products per row"
+    },
+    {
+      "type":    "range",
+      "id":      "grid_setting_large",
+      "min":     1,
+      "max":     6,
+      "step":    1,
+      "label":   "Desktop",
+      "default": 4
+    },
+    {
+      "type":    "range",
+      "id":      "grid_setting_medium",
+      "min":     1,
+      "max":     4,
+      "step":    1,
+      "label":   "Tablet",
+      "default": 2
+    },
+    {
+    "type":    "range",
+      "id":      "grid_setting_small",
+      "min":     1,
+      "max":     3,
+      "step":    1,
+      "label":   "Mobile",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Collection sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_sorting",
+      "label": "Show collection sorting"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "align_text",
+      "label": "Text alignment",
+      "default": "text-center",
+      "options": [
+        { "value": "text-left", "label": "Left"},
+        { "value": "text-center", "label": "Center"},
+        { "value": "text-right", "label": "Right"}
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show collection title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title_below",
+      "label": "Title below image",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description_below",
+      "label": "Description below image",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "description_font_size",
+      "label": "Description text size",
+      "default": "rte rte--large",
+      "options": [
+        { "value": "rte", "label": "Regular"},
+        { "value": "rte rte--large", "label": "Large"},
+        { "value": "rte rte--xl", "label": "Extra Large"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Feature image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show feature image",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Image height",
+      "default": "use_screen_one_third",
+      "options": [
+        { "value": "use_image", "label": "Image height"},
+        { "value": "use_screen_two_thirds", "label": "Tall"},
+        { "value": "use_screen_one_half", "label": "Medium"},
+        { "value": "use_screen_one_third", "label": "Short"},
+        { "value": "use_screen_one_fifth", "label": "Tiny"}
+      ]
+    },
+    {
+      "type":    "range",
+      "id":      "overlay_opacity",
+      "min":     0,
+      "max":     100,
+      "step":    5,
+      "label":   "Image overlay opacity",
+      "info":    "Increase contrast for legible text.",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "homepage--white",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "parallax",
+      "default": false,
+      "label": "Enable parallax scroll"
+    },
+    {
+      "type": "header",
+      "content": "Collection filters"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_sidebar",
+      "label": "Hide filters by default",
+      "info": "Customers will have the option to show them"
+    },
+    {
+      "type": "link_list",
+      "id": "collection_custom_nav_list",
+      "label": "Sidebar nav",
+      "info": "Custom list of collections"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_standard_nav",
+      "label": "Show collections",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_tag_nav",
+      "label": "Show tag filters",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tag_group",
+      "name": "Tag grouping",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Group name",
+          "default": "Filter by size"
+        },
+        {
+          "type": "text",
+          "id": "group_tags",
+          "label": "Tag list",
+          "default": "Small, Medium, Large",
+          "info": "Comma separated group of tags"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

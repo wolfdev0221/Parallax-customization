@@ -1,0 +1,132 @@
+{% assign alphabets = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0-9" | split: ','%}
+
+{% assign collection = collections['new-collection-wall-lights'] %}
+{% assign brands = collection.all_vendors | sort %}
+
+{% assign brand_select = "" %}
+{% for link in linklists.main-menu.links %}
+  {% if link.links != blank %}
+	{% for child_link in link.links %}  
+	  {% if child_link.links != blank and child_link.title == "Wall Lights" %}
+	 	{% for grandchild_link in child_link.links %}  
+		  {% assign brand_select = brand_select | append: grandchild_link.title | append: ',' %}
+		{% endfor %}
+	  {% endif %}   
+	{% endfor %}
+  {% endif %} 
+{% endfor %}
+  
+{% assign brand_select = brand_select | split: ',' | join: ',' %}
+{% assign my_products = brand_select | remove_last: ',' | split: ',' %}
+{% assign my_products = my_products | sort %}
+{% assign origin = "" %}
+
+<div class="homepage-collection-grid {{ hide_sidebar }} {{ section.settings.homepage_collection_grid_color }} section-{{ section.id }}" data-sidebar-toggle>
+  <div class="wrapper">
+    <div class="collection_link_carousel_lvl2_p">
+      <ul>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/brands" class="text_link ">ALL</a></li>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/furniture-brands" class="text_link">FURNITURE</a></li>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/lighting-brands" class="text_link active">LIGHTING</a></li>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/home-accessories-brands" class="text_link">HOME ACCESSORIES</a></li>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/entertaining-brands" class="text_link">ENTERTAINING</a></li>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/outdoor-brands" class="text_link">OUTDOOR</a></li>
+      </ul>
+    </div>
+      
+    <div class="collection_link_carousel_lvl3_p">
+      <ul>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/lighting-brands" class="text_link">ALL LIGHTING</a></li>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/table-lamps-brands" class="text_link">TABLE LAMPS</a></li>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/floor-lamps-brands" class="text_link">FLOOR LAMPS</a></li>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/ceiling-lamps-brands" class="text_link">CEILING LIGHTS</a></li>
+        <li><a href="https://www.thepremiumcollection.co.uk/pages/wall-lighting-brands" class="text_link active">WALL LIGHTS</a></li>
+      </ul>
+    </div>
+      
+    <div class="product_collection_data_p">
+      <div class="collection_data_breadcrumb_p">
+        {% include 'breadcrumb' %}
+      </div>
+      <div class="collection_data_product_amount_p">
+        {{ brands.size }} Brands Available
+      </div>
+      <div class="collection_data_product_contact">
+        <a href="https://www.thepremiumcollection.co.uk/pages/contact-us">Contact </a> for Bespoke Orders
+      </div>
+    </div>
+    <div class="brand_filter_p">
+      <div class="brand_filter_origin_p">
+        <span>Origin:</span>
+        <div class="radio">
+          <input id="radio-1" name="radio" type="radio" value="all" checked>
+          <label for="radio-1" class="radio-label">All Brands</label>
+        </div>
+
+        <div class="radio">
+          <input id="radio-2" name="radio" type="radio" value="uk">
+          <label  for="radio-2" class="radio-label">UK Brands</label>
+        </div>
+
+        <div class="radio">
+          <input id="radio-3" name="radio" type="radio" value="inter">
+          <label for="radio-3" class="radio-label">International Brands</label>
+        </div>
+      </div>
+      <div class="brand_filter_product_type_p">
+        <select class="brand_top_level_product_type_filter_p" disabled>
+          <option value="all">Product Type</option>
+          {% for link in my_products %}
+          	  <option value="{{ link }}">{{ link }}</option>
+          {% endfor %}
+        </select>
+        <i class="fa fa-sort"></i>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="brand_alphabetical_filter_p">
+      <div class="brand_alphabetical_filter_p_wrap">
+        {% for alphabet in alphabets %}
+          <a >
+            <div class="brand_alphabet {{ alphabet }}">
+              {{ alphabet }}
+            </div>	
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="brand_container_p">
+      {% for alphabet in alphabets %}
+      	<div id="brand_container_alphabets_p_{{ alphabet }}" class="brand_container_alphabets_p">
+          <h2> {{ alphabet }} </h2>
+          <div class="brand_container_alphabet_p">
+            {% for brand in brands %}
+              {% assign tmp1 = brand | slice:0 %}
+              {% assign tmp = tmp1 | upcase %}
+              {% if tmp == alphabet %}
+                {% for collection in collections %}
+                  {% if collection.title == brand %}
+                    <div class="brand_p {{ collection.metafields.origin.brand_origin }} {{ collection.metafields.type.product_type }}">
+                      <a href="{{ collection.url }}">{{ brand }}</a>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          </div>
+      	</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="navigation">
+  <svg width="1em" height="1.734em" viewBox="0 0 15 26" class="css-egf15a e7ch31k2"><g stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 2.5v23"></path><path stroke-width="1.2" d="M1 8l6.5-7L14 8"></path></g></svg>
+</div>
+  
+{% schema %}
+  {
+    "name": "Section name",
+    "settings": []
+  }
+{% endschema %}

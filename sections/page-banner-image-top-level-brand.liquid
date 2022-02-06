@@ -1,0 +1,64 @@
+<div class="collection_product_banner_p">
+  <div class="banner_wrap_p">
+    <div class="banner_rightside_p_mobile" style="background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url('{{ section.settings.image | img_url: 'x2048' }}')">
+    </div>
+    <div class="banner_leftside_p">
+      <h3 class="banner_title_p">{{ section.settings.title }}</h3>
+      <p class="banner_text_p">{{ section.settings.description }}</p>
+      <a href="{{ section.settings.link }}" class="banner_button_p">{{ section.settings.link_text }}</a>
+    </div>
+    <div class="banner_rightside_p" style="background-image: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), url('{{ section.settings.image | img_url: 'x2048' }}')">
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Headline",
+      "default": "Image with text overlay"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "This area is used to describe your store."
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Text",
+      "default": "View products",
+      "info": "Leave blank to link entire image"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text overlay",
+      "category": "custom"
+    }
+  ]
+}
+{% endschema %}

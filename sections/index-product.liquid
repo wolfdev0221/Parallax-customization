@@ -1,0 +1,201 @@
+{% assign product = all_products[section.settings.home_product] %}
+
+{% if product.empty? %}
+  <div class="homepage-product product-section {{ section.settings.homepage_product_color }}">
+    {% unless section.settings.title == '' %}
+      <h4 class="home__subtitle">{{ section.settings.title | escape }}</h4>
+    {% endunless %}
+      {% include 'onboarding-product' %}
+  </div>
+{% else %}
+  <div class="homepage-product product-section {{ section.settings.homepage_product_color }}"
+  id="ProductSection-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="product"
+  data-image-zoom-enable="{{ section.settings.zoom_enable }}">
+    {% unless section.settings.title == '' %}
+      <h4 class="home__subtitle">{{ section.settings.title | escape }}</h4>
+    {% endunless %}
+    {% include 'product' %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Featured product",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured product"
+    },
+    {
+      "type": "product",
+      "id": "home_product",
+      "label": "Product"
+    },
+    {
+      "type": "select",
+      "id": "homepage_product_color",
+      "label": "Background color",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity selection",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price_above",
+      "label": "Show price above product title",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "form_position",
+      "options": [
+        { "value": "below", "label": "Description above form"},
+        { "value": "above", "label": "Description below form"}
+      ],
+      "label": "Description position",
+      "default": "below"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_payment_button",
+      "label": "Show dynamic checkout button",
+      "info": "Lets customers check out directly using a familiar payment method. [Learn More](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "product_show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Media",
+      "info": "Learn more about [media types](https://help.shopify.com/manual/products/product-media)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_looping",
+      "label": "Enable video looping",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "zoom_enable",
+      "label": "Enable image zoom"
+    },
+    {
+      "type": "header",
+      "content": "Optional sizing popup"
+    },
+    {
+      "id": "info_page",
+      "type": "page",
+      "label": "Select page"
+    },
+    {
+      "type": "header",
+      "content": "Optional product tabs"
+    },
+    {
+      "type": "select",
+      "id": "tabs_position",
+      "options": [
+        { "value": "sidebar", "label": "Tabs beside image"},
+        { "value": "below", "label": "Tabs below"}
+      ],
+      "label": "Tabs position",
+      "default": "below"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab_description",
+      "name": "Description H6",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Heading 6 titles will be converted to tab headings, tab content will be everything between the Heading 6 titles. [Product Tabs Documentation](http://help.groupthought.com/article/36-tabs)."
+        }
+      ]
+    },
+    {
+      "type": "tab_richtext",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label",
+          "default": "Text tab",
+          "info": "Example: Warranty policy"
+        },
+        {
+          "type": "richtext",
+          "id": "raw_content",
+          "label": "Tab content",
+          "default": "<p>This tab content type will accept <strong>rich text</strong> to help with adding styles and links to additional pages or content. Use this to add supplementary information to help your buyers.</p>"
+        }
+      ]
+    },
+    {
+      "type": "tab_html",
+      "name": "HTML",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label",
+          "default": "HTML tab",
+          "info": "Example: Sizing video"
+        },
+        {
+          "type": "html",
+          "id": "raw_content",
+          "label": "Tab content",
+          "default": "<p>This tab content type will accept HTML code for advanced styling. Use this to add video embeds, or other advanced HTML content.</p>"
+        }
+      ]
+    },
+    {
+      "type": "tab_page",
+      "name": "Page",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label",
+          "default": "Page tab",
+          "info": "Example: Size chart"
+        },
+        {
+          "type": "page",
+          "id": "raw_content",
+          "label": "Tab content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured product",
+      "category": "Product"
+    }
+  ]
+}
+
+{% endschema %}

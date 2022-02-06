@@ -1,0 +1,158 @@
+{% assign colour_available = false %}
+{% for option in product.options_with_values %}
+  {% if option.name == "Colour" %}
+  	{% assign colour_available = true %}
+  {% endif %}
+{% endfor %}
+
+<div class="product__form">
+  {% comment %}
+    Optional size chart - controlled by Magnific Popup
+  {% endcomment %}
+  {% if section.settings.info_page != blank %}
+    {% assign size_page = pages[section.settings.info_page] %}
+    <p class="text-center">
+      <a id="toggleProductModal-{{ section.id }}" class="border-bottom-link uppercase" data-mfp-src="#ProductModal-{{ section.id }}">
+        {{ size_page.title }}
+      </a>
+    </p>
+    <div id="ProductModal-{{ section.id }}" class="product-modal mfp-hide">
+      <div class="rte">{{ size_page.content }}</div>
+    </div>
+  {% endif %}
+
+  
+  {% unless product.template_suffix contains 'charge-rabbit' %}
+    <div id="AddToCartForm-{{ section.id }}" data-section="{{ section.id }}" class="product-form-{{section.id}} product-form">
+      {% form 'product', product %}
+        {% unless product.has_only_default_variant %}
+      
+      <!-- swatch -->
+      {% if product.available and product.variants.size > 1 and colour_available %}
+      {% include 'swatch' with 'Colour' %}
+      {% endif %}
+      <!-- end swatch -->
+      
+          {% for option in product.options_with_values %}
+      		
+            <div class="selector-wrapper js {{option.name}}">
+              <label for="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}">
+                {{ option.name }}
+              </label>
+              <select class="single-option-selector single-option-selector-{{ section.id }}" id="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}" data-section="{{ section.id }}" data-index="option{{ forloop.index }}">
+                {% for value in option.values %}
+                  {% assign variant_avialable = true %}
+                  {% if product.options.size == 1 %}
+                    {% unless product.variants[forloop.index0].available  %}
+                      {% assign variant_avialable = false %}
+                    {% endunless %}
+                  {% endif %}
+                  <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}{% unless variant_avialable %} - {{ 'products.product.sold_out' | t }}{% endunless %}</option>
+                {% endfor %}
+              </select>
+            </div>
+      		
+          {% endfor %}
+        {% endunless %}
+      
+        <select name="id" id="ProductSelect-{{ section.id }}" data-section="{{ section.id }}" class="product-form__variants no-js">
+          {% for variant in product.variants %}
+            {% if variant.available %}
+              <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+                {{ variant.title }}
+              </option>
+            {% else %}
+              <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      
+        {% assign sold_out = true %}
+        {% if current_variant.available  %}
+          {% assign sold_out = false %}
+        {% endif %}
+      {%- if section.blocks.size > 0 and section.settings.tabs_position == 'below' -%}
+      <div class="wrapper tabs-wrapper productTabsWrapper">
+        {% include 'product-tabs' %}
+      </div>
+      {%- endif -%}
+     
+      <div class="qty_button_container_p">
+        {% if section.settings.show_quantity %}
+          <div class="js-qty quantity-selector" id="Quantity-{{section.id}}">
+            <span class="js-qty__adjust js-qty__adjust--minus quantity__minus">&minus;</span>
+            <input class="text quantity js-qty__num quantity__input" name="quantity" value="1" min="1" aria-label="quantity" pattern="[0-9]*"/>
+            <span class="js-qty__adjust js-qty__adjust--plus quantity__plus">+</span>
+          </div>
+        {% endif %}
+        
+        <div class="add-to-cart__wrapper">
+          <button type="submit" name="add" data-add-to-cart id="AddToCart-{{ section.id }}" class="btn btn--large btn--full btn--clear addToCart{% if sold_out %} disabled{% endif %}" {% if sold_out %}disabled="true"{% endif %}>
+            <span id="AddToCartText-{{ section.id }}">{% if sold_out %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}</span>
+          </button>
+        </div>
+      </div>
+      {% comment %}
+        {% if section.settings.enable_payment_button %}
+          {{ form | payment_button }}
+        {% endif %}
+	  {% endcomment %}
+      
+      {% endform %}
+    </div>
+  {% else %}
+    <form action="{{ product.metafields.charge_rabbit.subscribe_path }}" method="get" enctype="multipart/form-data" data-section="{{ section.id }}" class="product-form-{{ section.id }} charge-rabbit-product">
+      <input type="hidden" name="customer_id" value="{{customer.id}}">
+      {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+          <div class="selector-wrapper js">
+            <label for="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}">
+              {{ option.name }}
+            </label>
+            <select class="single-option-selector single-option-selector-{{ section.id }}" id="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}" data-section="{{ section.id }}" data-index="option{{ forloop.index }}">
+              {% for value in option.values %}
+                {% assign variant_avialable = true %}
+                {% if product.options.size == 1 %}
+                  {% unless product.variants[forloop.index0].available  %}
+                    {% assign variant_avialable = false %}
+                  {% endunless %}
+                {% endif %}
+                <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}{% unless variant_avialable %} - {{ 'products.product.sold_out' | t }}{% endunless %}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endfor %}
+      {% endunless %}
+
+      <select name="id" id="ProductSelect-{{ section.id }}" data-section="{{ section.id }}" class="product-form__variants no-js">
+        {% for variant in product.variants %}
+          {% if variant.available %}
+            <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+              {{ variant.title }}
+            </option>
+          {% else %}
+            <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+
+      {% assign sold_out = true %}
+      {% if current_variant.available  %}
+        {% assign sold_out = false %}
+      {% endif %}
+
+      
+      
+      <div class="add-to-cart__wrapper">
+        <button type="submit" name="add" id="AddToCart-{{ section.id }}" class="btn btn--large btn--full btn--clear uppercase addToCart{% if sold_out %} disabled{% endif %}" {% if sold_out %}disabled="true"{% endif %}>
+          <span id="AddToCartText-{{ section.id }}">{% if sold_out %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.join_membership' | t }}{% endif %}</span>
+          <span class="unicode">•</span>
+          <span class="add-to-cart__price"><span class="buttonPrice" id="ButtonPrice-{{ section.id }}" data-item-price="{{ current_variant.price }}">{{ current_variant.price | money }}</span></span>
+        </button>
+      </div>
+    </form>
+    {% include 'membership-product-callbacks' %}
+  {% endunless %}
+</div>
+
+<div id="CartDrawerWrapper--{{ section.id }}" class="cart-drawer"></div>

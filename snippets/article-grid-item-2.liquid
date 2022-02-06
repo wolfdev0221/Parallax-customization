@@ -1,0 +1,73 @@
+{% for tag in article.tags %}
+{% assign tagname = ""%}
+{% if tag == "Colourway Collection" %}
+{% assign tagname="Colourway Collection" %}
+{% elsif tag == "Vogue Collection" %}
+{% assign tagname="Vogue Collection" %}
+{% endif %}
+{% endfor %}
+<div class="grid__item {{ blog_grid }} {{ filter_tag }}">
+  <a class="blog__link" href="{{ article.url }}" aria-label="{{ article.title }}">
+    <div class="blog__article blog__article--card{% if article.image %} blog__article--image{% endif %}">
+      <div class="blog_article_overlay"></div>
+      <div class="blog_article_image_wrap">
+      	<div class="blog_article_image_container" style="background-image: url('{{ article.image | img_url: 'x1028' }}')"></div>
+      </div>
+      <div class="blog_article_title_container_wrap_p_desktop">
+        <div class="blog_article_title_container_desktop">
+          <h5>{{ article.title }}</h5>
+        </div>
+  	  </div>
+      <div class="blog_article_title_container_wrap_p_mobile">
+        <div class="blog_article_title_container_mobile">
+          <h5>{{ article.title }}</h5>
+        </div>
+  	  </div>
+      <div class="blog-tagname">
+        <div class="bt-content">
+          {{ tagname }} <span class="bt-bar"> | </span> {{ article.published_at | date: "%B 20%y" }}
+        </div>
+      </div>
+      <div class="blog_article_data">
+        <div class="blog_article_blog_date">
+          <span class="date_bar">| </span><span class="blog_article_date_mobile"> {{ article.published_at | date: "%B 20%y" }} </span><span class="date_bar"> |</span>
+          <span class="blog_article_collection"> {{ tagname }} </span> <span class="date_bar_desk"> | </span>
+          <span class="blog_article_date"> {{ article.published_at | date: "%B 20%y" }} </span>
+        </div>
+        <div class="blog_article_content">{{ article.excerpt }}</div>
+      </div>
+      <p class="blog_article_item_amount"> {{ article.metafields.amount.item_amount }} ITEMS </p>
+      <div class="blog_article_scial">
+        <a class="article_social_toggle"><img class="pin" src="{{ 'icon_dark.png' | asset_url  }}" alt="share icon"></a>
+        <div class="article_social_content">
+			<a href="//www.facebook.com/sharer.php?u={{ link }}"><i class="fa fa-facebook-f fa-2x"></i></a>
+            <a href="http://pinterest.com/pin/create/button/?url={{ link }}&amp;media={{ article.image | img_url: '1024x1024' | prepend: 'http:' }}&amp;description={{ shareTitle }}"><i class="fa fa-pinterest fa-2x"></i></a>
+            <a class="linkedin_link" href="https://www.linkedin.com/sharing/share-offsite/?url={{ link }}"><i class="fa fa-linkedin fa-2x"></i></a>
+            <a class="twitter_link" href="//twitter.com/share?url={{ link }}&amp;text={{ shareTitle }}"><i class="fa fa-twitter fa-2x"></i></a>
+            <a class="email_link" href="mailto:info@example.com?&subject='I want to share this article'&body={{ link }}" ><img alt="social mail icon" class="mail" src="{{ 'mail.png' | asset_url  }}"></a>
+        </div>
+      </div>
+      {% comment %}
+      {% if article.image %}
+        {%- assign img_object = article.image -%}
+        <div class="blog__article__overlay lazyload" data-bgset="{% include 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt }}"></div>
+        <noscript>
+          <div class="blog__article__overlay" style="background-image: url('{{ article.image | img_url: 'x540' }}')"></div>
+        </noscript>
+      {% endif %}
+      <div class="blog__article__content equalHeightColumn">
+        <h3 class="h3 blog__article__title">{{ article.title }}</h3>
+        {% unless article.image %}
+          <div class="rte blog__article__text">
+            {% if article.excerpt == blank %}
+              {{ article.content | strip_html | truncate: 200 }}
+            {% else %}
+              {{ article.excerpt | strip_html | truncate: 200 }}
+            {% endif %}
+          </div>
+        {% endunless %}
+      </div>
+      {% endcomment %}
+    </div>
+  </a>
+</div>

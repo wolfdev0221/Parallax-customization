@@ -1,0 +1,56 @@
+{% assign plus_link = collection.metafields.banner.plus_link %}
+
+<div class="collection_product_banner_p">
+  <div class="banner_wrap_p">
+    <div class="banner_leftside_p">
+      <h3 class="banner_title_p">
+        {{ collection.metafields.banner.title }}
+      </h3>
+      <div class="banner_text_p">{{ collection.metafields.banner.text }}</div>
+      <a href="{{ collection.metafields.banner.link }}" class="banner_button_p">{{ collection.metafields.banner.button_text }}</a>
+    </div>
+    <div class="plus_sign_link">
+     	<span><a href="{{ plus_link }}">Featured Product</a></span>
+        <svg viewBox="0 0 24 24" class="plus">
+            <path d="M 12 2 L 12 22 M 2 12 L 22 12" stroke="white" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" />
+        </svg>
+    </div>
+  </div>
+  <div class="image-overlay image-overlay-{{ section.settings.overlay_opacity }}"></div>
+  <div class="background-size-cover lazyload" data-bgset="{% include 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt }}"></div>
+</div>
+{% if collection.metafields.level.isFirst == 1 %}      
+<div class="link_carousel1_mobile_p">
+  <ul>
+    <li><a href="#" class="text_link active">ALL {{ collection.title }}</a></li>
+    {% for link in obj1.links %}
+    <li><a href="{{ link.url }}" class="text_link"><span>{{ link.title }}</span></a></li>
+    {% endfor %} 
+  </ul>
+</div>
+{% endif %}
+
+{% if collection.metafields.level.isFirst == 2 %}
+<div class="collection_link_carousel_lvl2_mobile_p">
+  <ul>
+    <li><a href="{{ obj.url }}">ALL {{ obj.title }}</a></li>
+    {% for link in obj.links %}
+    <li><a href="{{ link.url }}" class="text_link {% if link == sub_obj %} active {% endif %}"><span>{{ link.title }}</span></a></li>
+    {% endfor %} 
+  </ul>
+</div>
+<div class="collection_link_carousel_lvl3_mobile_p">
+  {% if collection.metafields.mode.brand_mode == 1 %}
+  <ul>
+    <li><a href="{{ collection.url }}" class="active">ALL {{ collection.title }}</a></li>
+  </ul>
+  {% else %}
+  <ul>
+    <li><a href="{{ sub_obj.url }}" {% if collection.url == sub_obj.url %} class="active" {% endif %} >ALL {{ sub_obj.title }}</a></li>
+    {% for link in sub_obj.links %}
+    <li><a href="{{ link.url }}" class="text_link {% if link.url == collection.url %} active {% endif %}"><span>{{ link.title }}</span></a></li>
+    {% endfor %} 
+  </ul>
+  {% endif %}
+</div>
+{% endif %}

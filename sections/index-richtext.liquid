@@ -1,0 +1,58 @@
+<!-- /sections/index-richtext.liquid-->
+
+<div class="homepage-page {{ section.settings.homepage_page_color }}">
+  <div class="wrapper">
+    <div class="grid">
+      <div class="grid__item large--five-sixths push--large--one-twelfth">
+        {% if section.settings.title != '' %}
+          <h4 class="home__subtitle">{{ section.settings.title | escape }}</h4>
+        {% endif %}
+        {% if section.settings.home_page_richtext != blank %}
+          <div class="homepage-page__content rte">
+            {{ section.settings.home_page_richtext }}
+          </div>
+        {% else %}
+          <div class="homepage-page__content rte">
+            {{ 'home_page.onboarding.no_content' | t }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Rich Text"
+    },
+    {
+      "id": "home_page_richtext",
+      "type": "richtext",
+      "label": "Text",
+      "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+    },
+    {
+      "type": "select",
+      "id": "homepage_page_color",
+      "label": "Background color",
+      "default": "homepage--white",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Rich text",
+    "category": "Text"
+  }]
+}
+{% endschema %}

@@ -1,0 +1,310 @@
+{% assign blockList = '' %}
+{% for block in section.blocks %}
+  {% assign blockList = blockList | append: block.type | append:','  %}
+{% endfor %}
+{% assign blockArray = blockList | split: "," %}
+
+{% assign swaparoo = false %}
+{% if blockArray[0] != 'image' and  blockArray[1] == 'image' %}
+  {% assign swaparoo = true %}
+{% endif %}
+
+<div class="grid--full homepage-double equalOverflowHeight {{ section.settings.height }}{% if swaparoo %} grid--rev{% endif %}">
+  {%- if swaparoo -%}
+    {%- assign block = section.blocks[1] -%}
+    {% include 'index-double-image' %}
+  {%- endif -%}
+
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'image' %}
+        {% unless swaparoo %}
+          {% include 'index-double-image' %}
+        {% endunless %}
+      {% when 'text' %}
+        <div class="grid__item large--one-half medium--one-half double__block {{ block.settings.homepage_bg_color }} preventOverflow" {{ block.shopify_attributes }}>
+          <div class="content--centered">
+            <div class="{{ block.settings.text_align }} preventOverflowContent">
+              {% if block.settings.title != '' %}
+                <h4 class="home__subtitle">{{ block.settings.title | escape }}</h4>
+              {% endif %}
+              {% if block.settings.richtext != blank %}
+                <div class="rte rte--homepage">
+                  {{ block.settings.richtext }}
+                </div>
+              {% endif %}
+              {% if block.settings.link_text != '' %}
+                <a class="{{ block.settings.button_style }}" href="{{ block.settings.link }}">
+                  {{ block.settings.link_text | escape }}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% when 'newsletter' %}
+        <div class="grid__item large--one-half medium--one-half double__block {{ block.settings.homepage_bg_color }} preventOverflow" {{ block.shopify_attributes }}>
+          <div class="content--centered">
+            <div class="{{ block.settings.text_align }} preventOverflowContent">
+              {% if block.settings.title != '' %}
+                <h4 class="home__subtitle">{{ block.settings.title | escape }}</h4>
+              {% endif %}
+              {% if block.settings.richtext != blank %}
+                <div class="rte rte--homepage">
+                  {{ block.settings.richtext }}
+                </div>
+              {% endif %}
+              {% include 'newsletter-form' %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+    {% endcase %}
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "max_blocks": 2,
+  "settings": [
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section height",
+      "default": "use_screen_one_third",
+      "options": [
+        { "value": "use_screen_full", "label": "Full screen height"},
+        { "value": "use_screen_two_thirds", "label": "Tall"},
+        { "value": "use_screen_one_half", "label": "Medium"},
+        { "value": "use_screen_one_third", "label": "Short"},
+        { "value": "use_screen_one_fifth", "label": "Tiny"}
+      ]
+    }
+  ],
+  "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type":    "range",
+          "id":      "overlay_opacity",
+          "min":     0,
+          "max":     100,
+          "step":    5,
+          "label":   "Image overlay opacity",
+          "info":    "Increase contrast for legible text.",
+          "default": 15
+        },
+        {
+          "type": "header",
+          "content": "Text"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Alignment",
+          "default": "text-center",
+          "options": [
+            { "value": "text-left", "label": "Align Left"},
+            { "value": "text-center", "label": "Align Center"},
+            { "value": "text-right", "label": "Align Right"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "color",
+          "label": "Text color",
+          "default": "homepage--white",
+          "options": [
+            { "value": "homepage--white", "label": "White"},
+            { "value": "homepage--light", "label": "Light"},
+            { "value": "homepage--splash", "label": "Accent"},
+            { "value": "homepage--dark", "label": "Dark"}
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "btn btn--clear btn--square uppercase",
+          "options": [
+            { "value": "btn btn--splash uppercase", "label": "Round"},
+            { "value": "btn btn--splash btn--square uppercase", "label": "Square"},
+            { "value": "btn btn--clear uppercase", "label": "Transparent round"},
+            { "value": "btn btn--clear btn--square uppercase", "label": "Transparent square"},
+            { "value": "btn btn--outline btn--square uppercase", "label": "Outlined square"}
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Button image (optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "button_image",
+          "label": "Button image",
+          "info": "1000 x 1000px .png max"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Rich text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Image and text"
+        },
+        {
+          "id": "richtext",
+          "type": "richtext",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Alignment",
+          "default": "text-center",
+          "options": [
+            { "value": "text-left", "label": "Align Left"},
+            { "value": "text-center", "label": "Align Center"},
+            { "value": "text-right", "label": "Align Right"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "homepage_bg_color",
+          "label": "Background color",
+          "default": "homepage--light",
+          "options": [
+            { "value": "homepage--white", "label": "White"},
+            { "value": "homepage--light", "label": "Light"},
+            { "value": "homepage--splash", "label": "Accent"},
+            { "value": "homepage--dark", "label": "Dark"}
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "btn btn--clear btn--square uppercase",
+          "options": [
+            { "value": "btn btn--splash uppercase", "label": "Round"},
+            { "value": "btn btn--splash btn--square uppercase", "label": "Square"},
+            { "value": "btn btn--clear uppercase", "label": "Transparent round"},
+            { "value": "btn btn--clear btn--square uppercase", "label": "Transparent square"},
+            { "value": "btn btn--outline btn--square uppercase", "label": "Outlined square"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Newsletter"
+        },
+        {
+          "id": "richtext",
+          "type": "richtext",
+          "label": "Text",
+          "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Alignment",
+          "default": "text-center",
+          "options": [
+            { "value": "text-left", "label": "Align Left"},
+            { "value": "text-center", "label": "Align Center"},
+            { "value": "text-right", "label": "Align Right"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "homepage_bg_color",
+          "label": "Background color",
+          "default": "homepage--light",
+          "options": [
+            { "value": "homepage--white", "label": "White"},
+            { "value": "homepage--light", "label": "Light"},
+            { "value": "homepage--splash", "label": "Accent"},
+            { "value": "homepage--dark", "label": "Dark"}
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

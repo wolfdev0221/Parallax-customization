@@ -1,0 +1,388 @@
+{%- assign collection = collections[section.settings.collection] -%}
+<div class="spotlight-slider home-section">
+  <div class="great_wrapper">
+	<div class="slider-d-p_container large--one-third">
+      <div class="slider-d-p single-item mobile-hide">
+        {% if section.settings.title-1 != "" %}
+        <div class="slider-slide">
+          <div class="wrapper">
+            <div class="grid">
+              <div class="grid__item">
+                <div class="cascade-text-animation ns-title-text">
+                  <h3>{{ section.settings.title-1 }}</h3>
+                </div>
+                <div class="cascade-text-animation ns-collection-text mobile-hide">
+                  <p class="text_animation_first button">{{ section.settings.brand-1 }}</p>
+                </div>
+                <div class="cascade-text-animation ns-description-text mobile-hide">
+                  <p class="text_animation_second">
+                    {{ section.settings.description-1 }}
+                  </p>
+                </div>
+                <div class="cascade-text-animation ss-shop mobile-hide">
+                  <a href="{{ section.settings.link-1 }}"><p class="text_animation_third button">Shop the Brand</p></a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% if section.settings.title-2 != "" %}
+        <div class="slider-slide">
+          <div class="wrapper">
+            <div class="grid">
+              <div class="grid__item">
+                <div class="ns-title-text">
+                  <h3>{{ section.settings.title-2 }}</h3>
+                </div>
+                <div class="ns-collection-text mobile-hide">
+                  <p class="text_animation_first button">{{ section.settings.brand-2 }}</p>
+                </div>
+                <div class="ns-description-text mobile-hide">
+                  <p class="text_animation_second">
+                    {{ section.settings.description-2 }}
+                  </p>
+                </div>
+                <div class="ss-shop mobile-hide">
+                  <a href="{{ section.settings.link-2 }}"><p class="text_animation_third">Shop the Brand</p></a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% if section.settings.title-3 != "" %}
+        <div class="slider-slide">
+          <div class="wrapper">
+            <div class="grid">
+              <div class="grid__item">
+                <div class="ns-title-text">
+                  <h3>{{ section.settings.title-3 }}</h3>
+                </div>
+                <div class="ns-collection-text mobile-hide">
+                  <p class="text_animation_first button">{{ section.settings.brand-3 }}</p>
+                </div>
+                <div class="ns-description-text mobile-hide">
+                  <p class="text_animation_second">
+                    {{ section.settings.description-3 }}
+                  </p>
+                </div>
+                <div class="ss-shop mobile-hide">
+                  <a href="{{ section.settings.link-3 }}"><p class="text_animation_third">Shop the Brand</p></a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="slider-d_container large--two-thirds">
+      <div class="slider-d single-item mobile-hide">
+        {% if section.settings.title-1 != "" %}
+        <div class="slider-slide">
+          <div class="wrapper">
+            <div class="grid">
+              <div class="grid__item">
+                <div class="mobile-section">
+                  <div class="fcs-slide" style="background-image:url({{ section.settings.image-s1-1 | img_url: '800x'}});">
+                    <div class="fcs-overlay"></div>
+                    <div class="fcs-new-content">
+                      <div class="fcs-new-title button">
+                        {{ section.settings.title-1 }}
+                      </div>
+                      <div class="fcs-new-description">
+                        {{ section.settings.description-1 }}
+                      </div>
+                      <div class="fcs-new-shop">
+                        <a href="{{ section.settings.link-1 }}">Shop the Brand</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slider-d-slide">
+                  <a href="{{ section.settings.link-1 }}" title="{{ section.settings.title-1 }}">
+                    <img class="big_p" src="{{ section.settings.image-s1-1 | img_url: '1440x' }}" alt="{{ section.settings.title-1 }}" />
+                    <img class="small_p" src="{{ section.settings.image-s2-1 | img_url: 'master' }}" alt="{{ section.settings.title-1 }}" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% if section.settings.title-2 != "" %}
+        <div class="slider-slide">
+          <div class="wrapper">
+            <div class="grid">
+
+              <div class="grid__item">
+                <div class="mobile-section">
+                  <div class="fcs-slide" style="background-image:url({{ section.settings.image-s1-2 | img_url: '800x'}});">
+                    <div class="fcs-overlay"></div>
+                    <div class="fcs-new-content">
+                      <div class="fcs-new-title button">
+                        {{ section.settings.title-2 }}
+                      </div>
+                      <div class="fcs-new-description">
+                        {{ section.settings.description-2 }}
+                      </div>
+                      <div class="fcs-new-shop">
+                        <a href="{{ section.settings.link-2 }}">Shop the Brand</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slider-d-slide">
+
+                  <a href="{{ section.settings.link-2 }}" title="{{ section.settings.title-2 }}">
+                    <img class="big_p" src="{{ section.settings.image-s1-2 | img_url: '1440x' }}" alt="{{ section.settings.title-2 }}" />
+                    <img class="small_p" src="{{ section.settings.image-s2-2 | img_url: 'master' }}" alt="{{ section.settings.title-1 }}" />
+                  </a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% if section.settings.title-3 != "" %}
+        <div class="slider-slide">
+          <div class="wrapper">
+            <div class="grid">
+
+              <div class="grid__item">
+                <div class="mobile-section">
+                  <div class="fcs-slide" style="background-image:url({{ section.settings.image-s1-3 | img_url: '800x'}});">
+                    <div class="fcs-overlay"></div>
+                    <div class="fcs-new-content">
+                      <div class="fcs-new-title button">
+                        {{ section.settings.title-3 }}
+                      </div>
+                      <div class="fcs-new-description">
+                        {{ section.settings.description-3 }}
+                      </div>
+                      <div class="fcs-new-shop">
+                        <a href="{{ section.settings.link-3 }}">Shop the Brand</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slider-d-slide">
+
+                  <a href="{{ section.settings.link-3 }}" title="{{ section.settings.title-3 }}">
+                    <img class="big_p" src="{{ section.settings.image-s1-3 | img_url: '1440x' }}" alt="{{ section.settings.title-3 }}" />
+                    <img class="small_p" src="{{ section.settings.image-s2-3 | img_url: 'master' }}" alt="{{ section.settings.title-1 }}" />
+                  </a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      
+    </div>
+  </div>
+</div>
+<div class="mobile-fcs mobile-section slider-y">
+  {% if section.settings.title-1 != "" %}
+  <div class="fcs-slide">
+    <div class="fcs-top">
+      {{ section.settings.title-1 }}
+    </div>
+    <div class="fcs-container">
+      <div class="fcs-image" style="background-image:url({{ section.settings.image-s1-1 | img_url: '1440x' }});"></div>
+      <div class="fcs-overlay"></div>
+      <div class="fcs-image-small">
+        <a href="{{ section.settings.link-1 }}" title="{{ section.settings.title-1 }}"><img src="{{ section.settings.image-s2-1 | img_url: 'master' }}" alt="{{ section.settings.title-1 }}" /></a>
+      </div>
+      <div class="fcs-new-content">
+        <div class="fcs-new-title button">
+          {{ section.settings.brand-1 }}
+        </div>
+        <div class="fcs-new-description">
+          {{ section.settings.description-1 }}
+        </div>
+        <div class="fcs-new-shop">
+          <a href="{{ section.settings.link-1 }}">Shop the Brand</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% if section.settings.title-2 != "" %}
+  <div class="fcs-slide">
+    <div class="fcs-top">
+      {{ section.settings.title-2 }}
+    </div>
+    <div class="fcs-container">
+      <div class="fcs-image" style="background-image:url({{ section.settings.image-s1-2 | img_url: '1440x' }});"></div>
+      <div class="fcs-overlay"></div>
+      <div class="fcs-image-small">
+        <a href="{{ section.settings.link-2 }}" title="{{ section.settings.title-2 }}"><img src="{{ section.settings.image-s2-2 | img_url: 'master' }}" alt="{{ section.settings.title-2 }}" /></a>
+      </div>
+      <div class="fcs-new-content">
+        <div class="fcs-new-title button">
+          {{ section.settings.brand-2 }}
+        </div>
+        <div class="fcs-new-description">
+          {{ section.settings.description-2 }}
+        </div>
+        <div class="fcs-new-shop">
+          <a href="{{ section.settings.link-2 }}">Shop the Brand</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% if section.settings.title-3 != "" %}
+  <div class="fcs-slide">
+    <div class="fcs-top">
+      {{ section.settings.title-3 }}
+    </div>
+    <div class="fcs-container">
+      <div class="fcs-image" style="background-image:url({{ section.settings.image-s1-3 | img_url: '1440x' }});"></div>
+      <div class="fcs-overlay"></div>
+      <div class="fcs-image-small">
+        <a href="{{ section.settings.link-3 }}" title="{{ section.settings.title-3 }}"><img src="{{ section.settings.image-s2-3 | img_url: 'master' }}" alt="{{ section.settings.title-3 }}" /></a>
+      </div>
+      <div class="fcs-new-content">
+        <div class="fcs-new-title button">
+          {{ section.settings.brand-3 }}
+        </div>
+        <div class="fcs-new-description">
+          {{ section.settings.description-3 }}
+        </div>
+        <div class="fcs-new-shop">
+          <a href="{{ section.settings.link-3 }}">Shop the Brand</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+<div class="dot_container">
+  <div class="wrapper">
+    <div class="grid dot-grid">
+      <div class="grid__item grid_first"></div>
+      <div class="grid__item grid_second">
+        <div class="sl-dot-hold"></div>
+      </div>
+    </div>
+    <div class="dot-mobile mobile-section">
+      <div class="sl-dot-hold_mobile"></div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+"name": "Spotlight Slider",
+"settings": [
+{
+"type": "text",
+"id": "title-1",
+"label": "Slide 1 - Title"
+},
+{
+"type": "text",
+"id": "brand-1",
+"label": "Slide 1 - Brand Name"
+},
+{
+"type": "text",
+"id": "link-1",
+"label": "Slide 1 - URL Link"
+},
+{
+"type": "textarea",
+"id": "description-1",
+"label": "Slide 1 - Description"
+},
+{
+"type": "image_picker",
+"id": "image-s1-1",
+"label": "Slide 1 - Large Image"
+},
+{
+"type": "image_picker",
+"id": "image-s2-1",
+"label": "Slide 1 - Small Image"
+},
+{
+"type": "text",
+"id": "title-2",
+"label": "Slide 2 - Title"
+},
+{
+"type": "text",
+"id": "brand-2",
+"label": "Slide 2 - Brand Name"
+},
+{
+"type": "text",
+"id": "link-2",
+"label": "Slide 2 - URL Link"
+},
+{
+"type": "textarea",
+"id": "description-2",
+"label": "Slide 2 - Description"
+},
+{
+"type": "image_picker",
+"id": "image-s1-2",
+"label": "Slide 2 - Large Image"
+},
+{
+"type": "image_picker",
+"id": "image-s2-2",
+"label": "Slide 2 - Small Image"
+},
+{
+"type": "text",
+"id": "title-3",
+"label": "Slide 3 - Title"
+},
+{
+"type": "text",
+"id": "brand-3",
+"label": "Slide 3 - Brand Name"
+},
+{
+"type": "text",
+"id": "link-3",
+"label": "Slide 3 - URL Link"
+},
+{
+"type": "textarea",
+"id": "description-3",
+"label": "Slide 3 - Description"
+},
+{
+"type": "image_picker",
+"id": "image-s1-3",
+"label": "Slide 3 - Large Image"
+},
+{
+"type": "image_picker",
+"id": "image-s2-3",
+"label": "Slide 3 - Small Image"
+}
+],
+"presets": [{
+"name": "Spotlight Slider",
+"category": "New Sections"
+}]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

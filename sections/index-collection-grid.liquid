@@ -1,0 +1,215 @@
+{%- assign grid_item_width = 'large--one-half' -%}
+
+{% case section.settings.grid %}
+  {% when 1 %}
+    {%- assign grid_item_width = 'large--one-half collection-grid--single' -%}
+  {% when 2 %}
+    {%- assign grid_item_width = 'large--one-half' -%}
+  {% when 3 %}
+    {%- assign grid_item_width = 'large--one-third' -%}
+  {% when 4 %}
+    {%- assign grid_item_width = 'large--one-quarter' -%}
+{% endcase %}
+
+<style>
+   .section-{{ section.id }} .collection-grid-item{
+    min-height: {{ section.settings.height | append: 'px' }};
+  }
+</style>
+
+<div class="homepage-collection-grid {{ section.settings.homepage_collection_grid_color }} section-{{ section.id }}">
+  <div class="wrapper">
+    {% if section.settings.title != blank %}
+    <h4 class="home__subtitle">{{ section.settings.title | escape }}</h4>
+    <div class="home__description">
+      {{ section.settings.description }}
+    </div>
+    {% endif %}
+
+    <div class="grid grid-uniform">
+      {% for block in section.blocks limit: section.blocks.size %}
+        {%- assign collection = collections[block.settings.collection] -%}
+        {% if block.settings.image != blank %}
+        {%- assign img_object = block.settings.image -%}
+        {% elsif collection.image %}
+            {%- assign img_object = collection.image -%}
+        {%- elsif collection.products.first -%}
+          {%- assign img_object = collection.products.first.featured_media.preview_image -%}
+        {%- endif -%}
+        <div class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }} >
+          <div class="collection-grid-item homepage-image {{ section.settings.color }}">
+            {%- assign item_link = collection.url | default: '#' -%}
+            {%- if block.settings.button_link != blank -%}
+              {% assign item_link = block.settings.button_link -%}
+            {%- endif -%}
+            <a href="{{ item_link }}" class="collection-grid-item__link" aria-label="{{ collection.title |  default: block.settings.title }}">
+              <div class="collection-grid-item__overlay lazyload" data-bgset="{% include 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt }}">
+                {% if collection.empty? %}
+                  {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                  {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </div>
+              <noscript>
+                <div class="collection-grid-item__overlay" style="background-image: url({{ img_object  | img_url: '360x' }})"></div>
+              </noscript>
+              <div class="collection-grid-item__content">
+                {% unless block.settings.title == '' %}<h2 class="title--flex home__title">{{ block.settings.title | escape }}</h2>{% endunless %}
+                {% unless block.settings.link_text == '' %}<div class="{{ section.settings.button_style }}"> {{ block.settings.link_text | escape }}</div>{% endunless %}
+              </div>
+              <div class="image-overlay image-overlay-{{ section.settings.overlay_opacity }}"></div>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if section.blocks.size == 0 %}
+    <div class="text-center">{{ 'home_page.onboarding.no_content' | t }}</div>
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "Collection list",
+    "class": "index-section",
+    "max_blocks": 12,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Collection list"
+      },
+      {
+      	"type": "textarea",
+      	"id": "description",
+     	 "label": "Description",
+     	 "default": "Morbi vel condimentum."
+      },
+      {
+        "type":    "range",
+        "id":      "grid",
+        "min":     1,
+        "max":     4,
+        "step":    1,
+        "label":   "Collections per row",
+        "default": 2
+      },
+      {
+        "type": "select",
+        "id": "homepage_collection_grid_color",
+        "label": "Background color",
+        "default": "homepage--white",
+        "options": [
+          { "value": "homepage--white", "label": "White"},
+          { "value": "homepage--light", "label": "Light"},
+          { "value": "homepage--splash", "label": "Accent"},
+          { "value": "homepage--dark", "label": "Dark"}
+        ]
+      },
+      {
+        "type": "select",
+        "id": "color",
+        "label": "Text color",
+        "default": "homepage--white",
+        "options": [
+          { "value": "homepage--white", "label": "White"},
+          { "value": "homepage--light", "label": "Light"},
+          { "value": "homepage--splash", "label": "Accent"},
+          { "value": "homepage--dark", "label": "Dark"}
+        ]
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Button style",
+        "default": "btn btn--clear btn--square uppercase",
+        "options": [
+          { "value": "btn btn--splash uppercase", "label": "Round"},
+          { "value": "btn btn--splash btn--square uppercase", "label": "Square"},
+          { "value": "btn btn--clear uppercase", "label": "Transparent round"},
+          { "value": "btn btn--clear btn--square uppercase", "label": "Transparent square"},
+          { "value": "btn btn--outline btn--square uppercase", "label": "Outlined square"}
+        ]
+      },
+      {
+        "type":    "range",
+        "id":      "overlay_opacity",
+        "unit":    "%",
+        "min":     0,
+        "max":     100,
+        "step":    5,
+        "label":   "Image overlay opacity",
+        "info":    "Increase contrast for legible text.",
+        "default": 15
+      },
+      {
+        "type":    "range",
+        "id":      "height",
+        "label":   "Height",
+        "unit":    "px",
+        "min":     250,
+        "max":     500,
+        "step":    10,
+        "default": 300
+      }
+    ],
+    "blocks": [
+      {
+        "type": "featured_collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Featured collection"
+          },
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Button text",
+            "default": "View products"
+          },
+          {
+            "type": "header",
+            "content": "Override defaults"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection list",
+        "category": "Collection",
+        "settings": {
+          "grid": 2
+        },
+        "blocks": [
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

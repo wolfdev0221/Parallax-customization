@@ -1,0 +1,68 @@
+<div class="homepage-newsletter {{ section.settings.homepage_bg_color }}">
+  <div class="wrapper">
+    <div class="large--one-half push--large--one-quarter medium--five-sixths push--medium--one-twelfth {{ section.settings.text_align }}">
+      {% if section.settings.title != '' %}
+        <h4 class="home__subtitle">{{ section.settings.title | escape }}</h4>
+      {% endif %}
+      {% if section.settings.richtext != blank %}
+        <div class="rte rte--homepage">
+          {{ section.settings.richtext }}
+        </div>
+      {% endif %}
+      {% include 'newsletter-form' %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Newsletter"
+    },
+    {
+      "id": "richtext",
+      "type": "richtext",
+      "label": "Subheading",
+      "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "text-center",
+      "options": [
+        { "value": "text-left", "label": "Align Left"},
+        { "value": "text-center", "label": "Align Center"},
+        { "value": "text-right", "label": "Align Right"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "homepage_bg_color",
+      "label": "Background color",
+      "default": "homepage--light",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}

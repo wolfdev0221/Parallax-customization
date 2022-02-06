@@ -1,0 +1,106 @@
+{%- assign collection = collections[section.settings.collection] -%}
+<div class="collection-text-slider-right home-section">
+  <div class="wrapper">
+    <div class="grid">
+      <div class="arrow-hold">
+      	<span class="panner_right" data-scroll-modifier='1'><img src="{{ 'right_arrow.png' | asset_url }}" /></span>
+	  </div>
+      <div class="arrow-hold_p">
+      	<span class="panner_left_p" data-scroll-modifier='-1'><img src="{{ 'left_arrow.png' | asset_url }}" /></span>
+	  </div>
+      <div class="grid__item large--one-third abcdefg">
+        <div class="text_container_p">
+          <div class="ns-title-text">
+            <h3>{{ section.settings.title }}</h3>
+          </div>
+          <div class="ns-description-text">
+            <p>
+              {{ section.settings.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="grid__item large--two-thirds abcdef mobile-hide">
+        <div class="multiple-items">
+          {% for product in collection.products limit:15 %}
+          <div class="slider-b-slide">
+            <a href="{{ product.url }}" title="{{ product.title }}"><img src="{{ product.featured_image.src | img_url: '500x500' }}" alt="{{ product.title }}" /></a>
+            <div class="slider-b-meta">
+              <div class="slider-b-meta-brand">
+                {{ product.vendor }}
+              </div>
+              <div class="slider-b-meta-title">
+                {{ product.title }}
+              </div>
+              <div class="slider-b-meta-price">
+                {{ product.price | money }}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+   	  </div>
+      <div class="grid__item mobile-section">
+        <div class="slider-b multiple-items">
+          {% for product in collection.products limit:15 %}
+          <div class="slider-b-slide_p">
+            <a href="{{ product.url }}" title="{{ product.title }}"><img src="{{ product.featured_image.src | img_url: '500x500' }}" alt="{{ product.title }}" /></a>
+            <div class="slider-b-meta">
+              <div class="slider-b-meta-brand">
+                {{ product.vendor }}
+              </div>
+              <div class="slider-b-meta-title">
+                {{ product.title }}
+              </div>
+              <div class="slider-b-meta-price">
+                {{ product.price | money }}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="holder_container">
+          <div class="arrow-hold"></div>
+          <div class="dot-hold"></div>
+        </div>
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <span class="slider__label sr-only"></span>
+        </div>
+      </div>
+  	</div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Collection Slider - Right",
+    "settings": [
+		{
+            "label": "Featured Collection",
+            "id": "collection",
+            "type": "collection"
+		},
+  		{
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Morbi Convallis Est Ac Tempor"
+  		},
+		{
+            "type": "textarea",
+            "id": "description",
+            "label": "Description",
+            "default": "Nam et justo id dolor placerat fermentum. Pellentesque congue aliquet aliquam. Proin faucibus mauris purus, rutrum mollis neque euismod eget. Vivamus mi risus, faucibus at condimentum vel, sollicitudin ut purus."
+  		}
+	],
+	"presets": [{
+      "name": "Collection Slider - Right",
+      "category": "New Sections"
+  	}]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

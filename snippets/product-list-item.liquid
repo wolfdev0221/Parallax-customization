@@ -1,0 +1,81 @@
+<!-- /snippets/product-list-item.liquid -->
+{% comment %}
+
+  This snippet is used to showcase each product during the loop,
+  'for product in collection.products' in collection.liquid.
+
+{% endcomment %}
+
+{% comment %}
+  Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% comment %}
+  Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+{% assign sold_out = true %}
+{% if product.available  %}
+  {% assign sold_out = false %}
+{% endif %}
+
+{%- assign product_img = product.featured_media.preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+<div class="grid__item">
+
+  {% comment %}
+    Link to your product with the 'within: collection' filter for the link to be aware of the collection.
+    This allows you to create collection-based navigation on the product page.
+
+    Results of using 'within: collection':
+    - Instead of a URL with /products/product-handle
+      you would get /collections/collection-handle/products/product-handle
+
+    For more info on navigation within a collection
+      - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection
+
+  {% endcomment %}
+  <div class="grid large--display-table product-list-item">
+    <div class="grid__item large--one-quarter large--display-table-cell medium--one-third small--one-third text-center">
+      <a href="{{ product.url | within: collection }}" class="lazy-image" style="padding-top:{{ 1 | divided_by: product.featured_media.preview_image.aspect_ratio | times: 100}}%; background-image:  url('{{ product.featured_media.preview_image | img_url: '1x1' }}');">
+        <img class="lazyload fade-in"
+          alt="{{ product.featured_media.alt | default: product.title  }}"
+          data-src="{{ product_img }}"
+          data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+          data-aspectratio="{{  product.featured_media.preview_image.aspect_ratio }}"
+          data-sizes="auto"/>
+      </a>
+      <noscript>
+        <img src="{{ product.featured_media.preview_image | img_url: '360x' }}" alt="{{ product.featured_media.preview_image.alt | default: product.title  }}">
+      </noscript>
+    </div>
+    <div class="grid__item large--three-quarters large--display-table-cell medium--two-thirds small--two-thirds">
+      <p class="h3--body"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></p>
+      <p class="{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}">
+        <span class="price">
+          {% if product.price_varies %}{{ 'products.general.from' | t }} {% endif %}
+          <span class="money">{{ product.price | money }}</span>
+        </span>
+        {% if sold_out %}
+        <br><strong>{{ 'products.product.sold_out' | t }}</strong>
+        {% endif %}
+        {% if on_sale %}
+        <br><span class="compare-at"><span class="money">{{ product.compare_at_price | money }}</span></span>
+        {% endif %}
+        {% if product.metafields.spr.reviews %}
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+        {% endif %}
+      </p>
+      <div class="rte">
+        {% if product.excerpt.size > 0 %}
+          {{ product.excerpt }}
+        {% else %}
+          <p>{{ product.content | replace: '[split]', '' | replace: '<p>[split]</p>', '' | strip_html | truncatewords: 30 }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

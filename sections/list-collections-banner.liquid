@@ -1,0 +1,76 @@
+{% assign img_object = section.settings.banner_image %}
+{% assign plus_link =  section.settings.plus_link %}
+
+<div class="collection_product_banner_p">
+  <div class="banner_wrap_p">
+    <div class="banner_leftside_p">
+      <h3 class="banner_title_p">
+        {{ section.settings.banner_title }}
+      </h3>
+      <div class="banner_text_p">{{ section.settings.banner_text }}</div>
+      <a href="{{ section.settings.button_link }}" class="banner_button_p">{{ section.settings.button_text }}</a>
+    </div>
+    <div class="plus_sign_link">
+     	<span><a href="{{ plus_link }}">Featured Product</a></span>
+        <svg viewBox="0 0 24 24" class="plus">
+            <path d="M 12 2 L 12 22 M 2 12 L 22 12" stroke="white" stroke-linecap="square" stroke-linejoin="round" stroke-width="1" />
+        </svg>
+    </div>
+  </div>
+  <div class="image-overlay image-overlay-{{ section.settings.overlay_opacity }}"></div>
+  <div class="background-size-cover lazyload" data-bgset="{% include 'bgset', image: img_object %}" role="img" aria-label="{{ img_object.alt }}"></div>
+</div>
+
+{% schema %}
+  {
+    "name": "Banner",
+    "settings": [
+      {
+        "type": "text",
+        "id": "banner_title",
+        "label": "Title for banner"
+      },
+      {
+        "type": "textarea",
+        "id": "banner_text",
+        "label": "Text for banner"
+      },
+      {
+        "type": "image_picker",
+        "id" : "banner_image",
+        "label": "Background image for banner"
+      },
+      {
+        "type": "text",
+        "id" : "button_text",
+        "label": "Text for banner button"
+      },
+      {
+        "type": "url",
+        "id" : "button_link",
+        "label": "Link for banner button"
+      },
+	  {
+        "type": "url",
+        "id" : "plus_link",
+        "label": "Link for plus icon"
+      },
+      {
+        "type":    "range",
+        "id":      "overlay_opacity",
+        "min":     0,
+        "max":     100,
+        "step":    5,
+        "label":   "Image overlay opacity",
+        "info":    "Increase contrast for legible text.",
+        "default": 20
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

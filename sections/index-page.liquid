@@ -1,0 +1,66 @@
+<!-- /sections/index-page.liquid -->
+
+<div class="homepage-page {{ section.settings.homepage_page_color }}">
+  <div class="wrapper">
+    <div class="grid">
+      {% if section.settings.home_page_content != blank or page.empty? %}
+        {% assign page = pages[section.settings.home_page_content] %}
+        {% assign page_src = page.content | escape %}
+        {% if page_src contains '&lt;img' %}
+          {% assign homepage_page_grid = 'one-whole' %}
+        {% else %}
+          {% assign homepage_page_grid = 'large--five-sixths push--large--one-twelfth' %}
+        {% endif %}
+        <div class="grid__item {{ homepage_page_grid }}">
+          {% if section.settings.home_page_show_title %}
+            <h4 class="home__subtitle">{{ page.title | escape }}</h4>
+          {% endif %}
+          <div class="rte homepage-page__content">
+            {{ page.content }}
+          </div>
+        </div>
+      {% else %}
+        <div class="grid__item large--five-sixths push--large--one-twelfth">
+          <div class="rte homepage-page__content">
+            {{ 'home_page.onboarding.no_content' | t }}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    {
+      "id": "home_page_content",
+      "type": "page",
+      "label": "Page"
+    },
+    {
+      "type": "checkbox",
+      "id": "home_page_show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "homepage_page_color",
+      "label": "Background color",
+      "default": "homepage--white",
+      "options": [
+        { "value": "homepage--white", "label": "White"},
+        { "value": "homepage--light", "label": "Light"},
+        { "value": "homepage--splash", "label": "Accent"},
+        { "value": "homepage--dark", "label": "Dark"}
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Page",
+    "category": "Text"
+  }]
+}
+{% endschema %}

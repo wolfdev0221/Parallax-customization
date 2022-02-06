@@ -1,0 +1,179 @@
+<div class="featured-category-slider home-section">
+  <div class="wrapper">
+    {% if section.settings.title != blank %}
+      <h3>{{ section.settings.title | escape }}</h3>
+      <div class="home__description">
+        {{ section.settings.description }}
+      </div>
+   	  <div class="arrow-hold">
+        <div class="panner_featured" data-scroll-modifier='1'><img src="{{ 'right_arrow.png' | asset_url }}" /></div>
+	  </div>
+      <div class="arrow-hold_p">
+        <div class="panner_featured_p" data-scroll-modifier='-1'><img src="{{ 'left_arrow.png' | asset_url }}" /></div>
+	  </div>
+      <div class="featured_carousel_p mobile-hide">
+    {% endif %}
+      {% for block in section.blocks %}
+        {%- assign collection = collections[block.settings.collection] -%}
+        {% if block.settings.image != blank %}
+        {%- assign img_object = block.settings.image -%}
+        {% elsif collection.image %}
+        {%- assign img_object = collection.image -%}
+        {%- elsif collection.products.first -%}
+        {%- assign img_object = collection.products.first.featured_media.preview_image -%}
+        {%- endif -%}
+        <div class="fcs-slide_container_p">
+          <div class="fcs-slide" style="background-image:url({{ block.settings.main_blog | img_url: 'master' }});">
+            <div class="fcs-overlay"></div>
+
+            <div class="fcs-content">
+              <div class="fcs-title">
+                <span class="fcs-explore">explore</span><br />
+                <span class="fcs-name">{{ collection.title }}</span>
+              </div>
+            </div>
+
+            <div class="fcs-button">
+              <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z"/></svg>
+            </div>
+
+          </div>
+          <a href="{{ collection.url }}">
+            <div class="behind_animation_p">
+
+              <p>Preview</p>
+              <div class="behind_image_container_p" style="background-image: url('{{ block.settings.image1_blog | img_url: 'master' }}')"></div>
+              <div class="behind_image_container_p" style="background-image: url('{{ block.settings.image2_blog | img_url: 'master' }}')"></div>
+              <p class="behind_desc_p">{{ block.settings.text_blog }}</p>
+              <h3>{{ block.settings.title_blog }}</h3>
+              <span>Explore the look</span>
+
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+      </div>
+    <div class="mobile-section">
+      {% for block in section.blocks %}
+      {%- assign collection = collections[block.settings.collection] -%}
+      {% if block.settings.image != blank %}
+      {%- assign img_object = block.settings.image -%}
+      {% elsif collection.image %}
+      {%- assign img_object = collection.image -%}
+      {%- elsif collection.products.first -%}
+      {%- assign img_object = collection.products.first.featured_media.preview_image -%}
+      {%- endif -%}
+      <div class="fcs-slide_mobile_p">
+        <div class="fcs-slide" style="background-image:url({{ block.settings.main_blog | img_url: 'master' }});">
+          <div class="fcs-overlay"></div>
+
+          <div class="fcs-content">
+            <div class="fcs-title">
+              <span class="fcs-explore">explore</span><br />
+              <span class="fcs-name">{{ collection.title }}</span>
+            </div>
+          </div>
+
+          <div class="fcs-button">
+            <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z"/></svg>
+          </div>
+        </div>
+
+        <div class="behind_animation_p">
+          <a href="{{ collection.url }}">
+            <p>Preview</p>
+            <div class="behind_image_container_p" style="background-image: url('{{ block.settings.image1_blog | img_url: 'master' }}')"></div>
+            <div class="behind_image_container_p" style="background-image: url('{{ block.settings.image2_blog | img_url: 'master' }}')"></div>
+            <p class="behind_desc_p">{{ block.settings.text_blog }}</p>
+            <h3>{{ block.settings.title_blog }}</h3>
+            <span>Explore the look</span>
+          </a>
+        </div>
+      </div>
+      
+      {% endfor %}
+    </div>
+    <div class="dot-hold mobile-section"></div>
+    </div>
+  </div>
+{% schema %}
+  {
+    "name": "Featured Category Slider",
+    "settings": [
+  		{
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Morbi Convallis Est Ac Tempor"
+  		},
+		{
+            "type": "textarea",
+            "id": "description",
+            "label": "Description",
+            "default": "Nam et justo id dolor placerat fermentum. Pellentesque congue aliquet aliquam. Proin faucibus mauris purus, rutrum mollis neque euismod eget. Vivamus mi risus, faucibus at condimentum vel, sollicitudin ut purus."
+  		}
+	],
+    "blocks": [
+      {
+        "type": "featured_collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "main_blog",
+            "label": "Main image for Collection"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Featured collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "image1_blog",
+            "label": "First image for Collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "image2_blog",
+            "label": "Second image for Collection"
+          },
+          {
+            "type": "textarea",
+            "id": "text_blog",
+            "label": "Description for Collection"
+          },
+          {
+            "type": "text",
+            "id": "title_blog",
+            "label": "Title for Collection"
+          }
+        ]
+      }
+    ],
+	"presets": [{
+      "name": "Featured Category Slider",
+      "category": "New Sections",
+	  "blocks": [
+        {		
+		  "type": "featured_collection"
+        },
+        {
+		  "type": "featured_collection"
+        }
+      ]
+  	}]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

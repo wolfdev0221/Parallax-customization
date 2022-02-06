@@ -1,0 +1,132 @@
+<!-- /sections/list-collections.liquid -->
+{% case section.settings.grid %}
+  {% when 1 %}
+    {% assign grid_width_large = 'large--one-third push--large--one-third clear' %}
+    {% assign grid_width_medium = 'medium--one-half push--medium--one-quarter clear' %}
+    {% assign grid_width_small = 'small--one-whole' %}
+  {% when 2 %}
+    {% assign grid_width_large = 'large--one-half' %}
+    {% assign grid_width_medium = 'medium--one-half' %}
+    {% assign grid_width_small = 'small--one-half' %}
+  {% when 3 %}
+    {% assign grid_width_large = 'large--one-third' %}
+    {% assign grid_width_medium = 'medium--one-third' %}
+    {% assign grid_width_small = 'small--one-whole' %}
+  {% when 4 %}
+    {% assign grid_width_large = 'large--one-quarter' %}
+    {% assign grid_width_medium = 'medium--one-half' %}
+    {% assign grid_width_small = 'small--one-half' %}
+  {% when 5 %}
+    {% assign grid_width_large = 'large--one-fifth' %}
+    {% assign grid_width_medium = 'medium--one-third' %}
+    {% assign grid_width_small = 'small--one-half' %}
+  {% when 6 %}
+    {% assign grid_width_large = 'large--one-sixth' %}
+    {% assign grid_width_medium = 'medium--one-third' %}
+    {% assign grid_width_small = 'small--one-half' %}
+  {% else %}
+    {% assign grid_width_large = 'large--one-quarter' %}
+    {% assign grid_width_medium = 'medium--one-half' %}
+    {% assign grid_width_small = 'small--one-half' %}
+{% endcase %}
+
+{%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+
+<div class="wrapper page-margin">
+  {% if section.settings.display_type == 'all' %}
+    {% for collection in collections %}
+      {% unless collection.handle == 'frontpage' %}
+        {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+        <div class="collection-list-item">
+          <div class="section-header">
+            <h3 class="h3 section-header__left title"><a href="{{ collection.url }}" title="{{ 'collections.general.link_title' | t: title: collection_title }}">{{ collection_title }} &rsaquo;</a></h3>
+          </div>
+          <div class="grid-uniform">
+            {% for product in collection.products limit:product_limit %}
+              {% include 'product-grid-item' %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endunless %}
+    {% endfor %}
+  {% else %}
+    {% for block in section.blocks %}
+      {%- assign collection = collections[block.settings.collection] -%}
+      {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+      <div class="collection-list-item">
+        <div class="section-header">
+          <h3 class="h3 section-header__left title"><a href="{{ collection.url }}" title="{{ 'collections.general.link_title' | t: title: collection_title }}">{{ collection_title }} &rsaquo;</a></h3>
+        </div>
+        <div class="grid-uniform">
+          {% for product in collection.products limit:product_limit %}
+            {% include 'product-grid-item' %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+
+{% schema %}
+{
+  "name": "Collections list",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "All of your collections are listed by default. To customize your list, choose 'Selected' and add collections."
+    },
+    {
+      "type": "radio",
+      "id": "display_type",
+      "label": "Select collections to show",
+      "default": "all",
+      "options": [
+        {
+          "value": "all",
+          "label": "All"
+        },
+        {
+          "value": "selected",
+          "label": "Selected"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Product grid"
+    },
+    {
+      "type":    "range",
+      "id":      "grid",
+      "min":     1,
+      "max":     6,
+      "step":    1,
+      "label":   "Products per row",
+      "default": 4
+    },
+    {
+      "type":    "range",
+      "id":      "rows",
+      "min":     1,
+      "max":     8,
+      "step":    1,
+      "label":   "Number of rows",
+      "default": 1
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "label": "Collection",
+          "id": "collection",
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
